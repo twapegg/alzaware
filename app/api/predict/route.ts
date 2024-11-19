@@ -8,7 +8,7 @@ export const POST = async (req: any) => {
   try {
     // go to the model and get the prediction
     const response = await fetch(
-      "https://literate-umbrella-9x95wr5rq692qg7-5000.app.github.dev/predict",
+      "https://urban-orbit-q54x75r57q6c95vg-5000.app.github.dev/predict",
       {
         method: "POST",
         headers: {
