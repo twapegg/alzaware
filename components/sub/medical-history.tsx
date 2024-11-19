@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -32,14 +32,35 @@ const formSchema = z.object({
   kidney_disease: z.boolean(),
 });
 
-export default function MedicalHistory() {
+interface MedicalHistoryProps {
+  defaultValues?: Partial<z.infer<typeof formSchema>>;
+  onSubmit: (values: z.infer<typeof formSchema>) => void;
+}
+
+const MedicalHistory = forwardRef((props: MedicalHistoryProps, ref) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      diabetes: false,
+      hypertension: false,
+      heart_disease: false,
+      asthma: false,
+      cancer: false,
+      kidney_disease: false,
+      ...props.defaultValues, // merge with passed default values
+    },
   });
 
+  useImperativeHandle(ref, () => ({
+    submitForm: () => {
+      form.handleSubmit(props.onSubmit)();
+    },
+  }));
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    props.onSubmit(values);
   }
+
   return (
     <CardContent>
       <CardHeader>
@@ -161,4 +182,6 @@ export default function MedicalHistory() {
       </CardContent>
     </CardContent>
   );
-}
+});
+
+export default MedicalHistory;

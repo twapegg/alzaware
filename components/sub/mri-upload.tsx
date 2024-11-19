@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import {
@@ -29,23 +29,63 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
-  // mri is an image file
-  mri: z.string({
-    required_error: "MRI scan is required",
+  mri: z.instanceof(File).refine((file) => file.size > 0, {
+    message: "MRI scan is required",
   }),
-  scan_date: z.date({
+  scan_date: z.string({
     required_error: "Scan date is required",
   }),
-  notes: z.string(),
+  notes: z.string().optional(),
 });
 
-export default function MRIUpload() {
+interface MRIUploadProps {
+  defaultValues: {
+    mri?: File;
+    scan_date?: string;
+    notes?: string;
+  };
+  onSubmit: (values: any) => void;
+}
+
+const MRIUpload = forwardRef((props: MRIUploadProps, ref) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: props.defaultValues,
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  useImperativeHandle(ref, () => ({
+    submitForm: () => {
+      form.handleSubmit(onSubmit)();
+    },
+  }));
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const formData = new FormData();
+    formData.append("mri", values.mri);
+    formData.append("scan_date", values.scan_date);
+    formData.append("notes", values.notes || "");
+
+    const response = await fetch("/api/patients/new", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      const predictResponse = await fetch("/api/predict", {
+        method: "POST",
+        body: JSON.stringify({ imageUrl: result.url }),
+      });
+
+      const predictResult = await predictResponse.json();
+      if (predictResponse.ok) {
+        props.onSubmit({ ...values, mri: result.url, prediction: predictResult.message });
+      } else {
+        console.error("Failed to get prediction:", predictResult.message);
+      }
+    } else {
+      console.error("Failed to upload MRI scan:", result.error);
+    }
   }
 
   return (
@@ -70,7 +110,17 @@ export default function MRIUpload() {
                     <FormItem>
                       <FormLabel htmlFor="mri">MRI Scan</FormLabel>
                       <FormControl>
-                        <Input id="mri" type="file" {...field} />
+                        <Input
+                          id="mri"
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              field.onChange(file);
+                            }
+                          }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -95,7 +145,7 @@ export default function MRIUpload() {
                               )}
                             >
                               {field.value ? (
-                                format(field.value, "PPP")
+                                format(new Date(field.value), "PPP")
                               ) : (
                                 <span>Pick a date</span>
                               )}
@@ -106,8 +156,8 @@ export default function MRIUpload() {
                         <PopoverContent className="w-auto p-0" align="start">
                           <Calendar
                             mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
+                            selected={field.value ? new Date(field.value) : undefined}
+                            onSelect={(date) => field.onChange(date?.toISOString() || "")}
                             disabled={(date) =>
                               date > new Date() || date < new Date("1900-01-01")
                             }
@@ -126,4 +176,6 @@ export default function MRIUpload() {
       </CardContent>
     </CardContent>
   );
-}
+});
+
+export default MRIUpload;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Separator } from "../ui/separator";
-import { Button } from "../ui/button";
 import {
   Form,
   FormControl,
@@ -20,7 +19,6 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const formSchema = z.object({
@@ -43,19 +41,27 @@ const formSchema = z.object({
   }),
 });
 
-export default function PersonalInfo() {
+interface PersonalInfoProps {
+  defaultValues: z.infer<typeof formSchema>;
+  onSubmit: (values: z.infer<typeof formSchema>) => void;
+}
+
+const PersonalInfo = forwardRef((props: PersonalInfoProps, ref) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      full_name: "",
-      email: "",
-      contact_number: "",
-    },
+    defaultValues: props.defaultValues,
   });
 
+  useImperativeHandle(ref, () => ({
+    submitForm: () => {
+      form.handleSubmit(props.onSubmit)();
+    },
+  }));
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    props.onSubmit(values);
   }
+
   return (
     <CardContent>
       <CardHeader>
@@ -79,7 +85,9 @@ export default function PersonalInfo() {
                       <FormControl>
                         <Input placeholder="Juan Dela Cruz" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <div>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -94,7 +102,9 @@ export default function PersonalInfo() {
                       <FormControl>
                         <Input placeholder="juandelacruz@mail.com" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <div>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -107,10 +117,11 @@ export default function PersonalInfo() {
                     <FormItem>
                       <FormLabel>Date of Birth*</FormLabel>
                       <FormControl>
-                        <Input placeholder="MM/DD/YYYY" {...field} />
+                        <Input placeholder="YYYY-MM-DD" {...field} />
                       </FormControl>
-
-                      <FormMessage />
+                      <div>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -126,7 +137,9 @@ export default function PersonalInfo() {
                       <FormControl>
                         <Input placeholder="09123456789" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <div>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -160,7 +173,9 @@ export default function PersonalInfo() {
                           </FormItem>
                         </RadioGroup>
                       </FormControl>
-                      <FormMessage />
+                      <div>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -171,4 +186,6 @@ export default function PersonalInfo() {
       </CardContent>
     </CardContent>
   );
-}
+});
+
+export default PersonalInfo;
