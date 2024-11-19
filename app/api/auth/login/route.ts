@@ -6,23 +6,13 @@ export const POST = async (req: any) => {
   const { email, password } = await req.json();
 
   try {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-
-    return NextResponse.json(
-      { message: "User added successfully" },
-      { status: 201 }
-    );
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    return NextResponse.json(user, { status: 200 }); // Return user data
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json({ message: error.message }, { status: 500 });
   }
 };
+
+

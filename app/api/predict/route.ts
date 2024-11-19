@@ -8,7 +8,7 @@ export const POST = async (req: any) => {
   try {
     // go to the model and get the prediction
     const response = await fetch(
-      "https://literate-umbrella-9x95wr5rq692qg7-5000.app.github.dev/predict",
+      "https://literate-carnival-6pg5wq5qwg5h6r6-5000.app.github.dev/predict",
       {
         method: "POST",
         headers: {
@@ -27,7 +27,9 @@ export const POST = async (req: any) => {
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
       const errorText = await response.text();
-      throw new Error(`Unexpected content type: ${contentType}, body: ${errorText}`);
+      throw new Error(
+        `Unexpected content type: ${contentType}, body: ${errorText}`
+      );
     }
 
     // parse the response

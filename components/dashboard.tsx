@@ -6,12 +6,25 @@ import { RecentAnalysis } from "./sub/recent-analysis";
 import { MonthlyAnalysisChart } from "./sub/monthly-analysis-chart";
 import SharedScans from "./sub/shared-scans";
 
+import { useAuth } from "@/context/auth-context";
+import { useEffect } from "react";
+
 export default function Dashboard() {
+  const { user, logout } = useAuth();
+  console.log(user); // Log user data to check what it contains
+
+  // useEffect to log the user
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
     <div>
       <div className="flex justify-between items-center pb-4">
         <div>
-          <h1 className="text-2xl">Welcome back, John Doe</h1>
+          <h1 className="text-2xl">
+            Welcome back, {user ? user.displayName : "Guest"}
+          </h1>
           <p className="text-gray-500">
             Let's make today efficient and patient-friendly.
           </p>
