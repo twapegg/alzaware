@@ -6,25 +6,42 @@ import { RecentAnalysis } from "./sub/recent-analysis";
 import { MonthlyAnalysisChart } from "./sub/monthly-analysis-chart";
 import SharedScans from "./sub/shared-scans";
 
-import { useAuth } from "@/context/auth-context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
-  console.log(user); // Log user data to check what it contains
+  const [userName, setUserName] = useState("");
 
-  // useEffect to log the user
+  // useEffect to get the user's name from the server-side route
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    const fetchUserName = async () => {
+      try {
+        const response = await fetch("/api/auth/verify-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const userProfile = await response.json();
+
+          setUserName(userProfile.first_name + " " + userProfile.last_name);
+        } else {
+          console.error("Error verifying token:", await response.json());
+        }
+      } catch (error) {
+        console.error("Error verifying token:", error);
+      }
+    };
+
+    fetchUserName();
+  }, []);
 
   return (
     <div>
       <div className="flex justify-between items-center pb-4">
         <div>
-          <h1 className="text-2xl">
-            Welcome back, {user ? user.displayName : "Guest"}
-          </h1>
+          <h1 className="text-2xl">Welcome back, {userName || "Guest"}</h1>
           <p className="text-gray-500">
             Let's make today efficient and patient-friendly.
           </p>

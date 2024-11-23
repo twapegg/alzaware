@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation"; // Import useRouter
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 
 import {
@@ -16,7 +17,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "./ui/separator";
+import { Separator } from "../ui/separator";
 
 // Define the form schema
 const formSchema = z.object({
@@ -27,6 +28,7 @@ const formSchema = z.object({
 });
 
 export default function SignUpForm() {
+  const router = useRouter(); // Initialize useRouter
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,15 +40,16 @@ export default function SignUpForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      fetch("/api/auth/signup", {
+      await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(values),
       });
+      router.push("/login"); // Route to /login
     } catch (error) {
       console.error(error);
     }
