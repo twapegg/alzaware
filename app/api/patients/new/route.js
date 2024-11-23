@@ -4,7 +4,7 @@ import cloudinary from "@/lib/cloudinaryConfig";
 import { Readable } from "stream";
 import crypto from "crypto";
 
-export const POST = async (req: any) => {
+export const POST = async (req) => {
   try {
     const formData = await req.formData();
     const file = formData.get("mri");

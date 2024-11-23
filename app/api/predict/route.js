@@ -1,22 +1,19 @@
 import { NextResponse } from "next/server";
 
-export const POST = async (req: any) => {
+export const POST = async (req) => {
   // get image_url from request
   const { imageUrl } = await req.json();
   console.log(imageUrl);
 
   try {
     // go to the model and get the prediction
-    const response = await fetch(
-      "https://literate-carnival-6pg5wq5qwg5h6r6-5000.app.github.dev/predict",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ imageUrl }),
-      }
-    );
+    const response = await fetch("https://alzaware-api.onrender.com/predict", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ imageUrl }),
+    });
 
     // Check if the response is OK and has JSON content
     if (!response.ok) {
@@ -36,7 +33,7 @@ export const POST = async (req: any) => {
     const data = await response.json();
 
     return NextResponse.json({ message: data }, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error(error);
     return NextResponse.json({ message: error?.message }, { status: 500 });
   }
