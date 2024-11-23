@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation"; // Import useRouter
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 
 import {
@@ -16,7 +17,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "../ui/separator";
+import { Separator } from "@/components/ui/separator";
 
 // Define the form schema
 const formSchema = z.object({
@@ -25,6 +26,7 @@ const formSchema = z.object({
 });
 
 export default function SignInForm() {
+  const router = useRouter(); // Initialize useRouter
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,25 +36,23 @@ export default function SignInForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      fetch("/api/auth/login", {
+      const response = await fetch("/api/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(values),
       });
+      router.push("/"); // Redirect to home page
     } catch (error) {
       console.error(error);
     }
   }
+
   return (
     <Card className="p-6 border-black w-auto">
       <div className="flex flex-col gap-2 pb-6">
         <CardTitle>Log in</CardTitle>
-        <CardDescription>Log in to your accountt.</CardDescription>
+        <CardDescription>Log in to your account.</CardDescription>
         <Separator className="bg-black" />
       </div>
 

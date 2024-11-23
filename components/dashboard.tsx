@@ -24,7 +24,6 @@ export default function Dashboard() {
 
         if (response.ok) {
           const userProfile = await response.json();
-
           setUserName(userProfile.first_name + " " + userProfile.last_name);
         } else {
           console.error("Error verifying token:", await response.json());

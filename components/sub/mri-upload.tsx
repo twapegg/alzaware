@@ -79,7 +79,11 @@ const MRIUpload = forwardRef((props: MRIUploadProps, ref) => {
 
       const predictResult = await predictResponse.json();
       if (predictResponse.ok) {
-        props.onSubmit({ ...values, mri: result.url, prediction: predictResult.message });
+        props.onSubmit({
+          ...values,
+          mri: result.url,
+          prediction: predictResult,
+        });
       } else {
         console.error("Failed to get prediction:", predictResult.message);
       }
@@ -156,8 +160,12 @@ const MRIUpload = forwardRef((props: MRIUploadProps, ref) => {
                         <PopoverContent className="w-auto p-0" align="start">
                           <Calendar
                             mode="single"
-                            selected={field.value ? new Date(field.value) : undefined}
-                            onSelect={(date) => field.onChange(date?.toISOString() || "")}
+                            selected={
+                              field.value ? new Date(field.value) : undefined
+                            }
+                            onSelect={(date) =>
+                              field.onChange(date?.toISOString() || "")
+                            }
                             disabled={(date) =>
                               date > new Date() || date < new Date("1900-01-01")
                             }

@@ -49,7 +49,7 @@ export default function SignUpForm() {
         },
         body: JSON.stringify(values),
       });
-      router.push("/login"); // Route to /login
+      router.push("/auth/login"); // Route to /login
     } catch (error) {
       console.error(error);
     }

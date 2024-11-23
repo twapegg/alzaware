@@ -1,5 +1,5 @@
 import React from "react";
-import Testss from "@/components/test";
+import AddPatient from "@/components/add-patient";
 import { Separator } from "@/components/ui/separator";
 import {
   Breadcrumb,
@@ -20,7 +20,7 @@ export default function page() {
       <HeaderPage title="Add New Patient" />
       <Breadcrumbs current="Add New Patient" />
       <div className=" grid place-items-center w-full">
-        <Testss />
+        <AddPatient />
       </div>
     </div>
   );
