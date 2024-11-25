@@ -246,6 +246,35 @@ const page = () => {
               </div>
             </div>
           </TabsContent>
+          <TabsContent value="Contact" >
+            <div className = "w-1/2 mx-auto " >
+              <h1 className="px-8 text-5xl font-bold flex justify-center">
+                Contact Information{" "}
+              </h1>
+            </div>
+            <div className = " grid grid-cols-3 px-8  py-5">
+                <div>
+                  <div className="flex justify-center font-bold text-lg">
+                    <h3>Contact Number</h3>
+                  </div>
+                  <div className="flex items-center pl-20 py-5">
+                    <p> Number no.1: 09995843332
+                      <br></br>
+                      Number no.2: 09995843332
+                      <br></br>
+                      Number no.2: 09995843332   
+                    </p>
+                  </div>
+
+                </div>
+                <div >
+                  <h3 >Email Address</h3>
+                </div>
+                <div className="flex justify-center font-bold text-lg">
+                  <h3>Facebook</h3>
+                </div>
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
     </div>
