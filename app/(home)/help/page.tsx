@@ -185,7 +185,8 @@ const page = () => {
                     </AccordionTrigger>
                     <AccordionContent>
                       <p className="indent-5 text-justify">
-                        Medical Records are stored during the patient registration process of the application.
+                        Medical Records are stored during the patient
+                        registration process of the application.
                       </p>
                     </AccordionContent>
                   </AccordionItem>
@@ -197,7 +198,8 @@ const page = () => {
                     </AccordionTrigger>
                     <AccordionContent>
                       <p className="indent-5 text-justify">
-                        Yes, the medical data is stored securely and is only accessible to authorized users.
+                        Yes, the medical data is stored securely and is only
+                        accessible to authorized users.
                       </p>
                     </AccordionContent>
                   </AccordionItem>
@@ -205,15 +207,20 @@ const page = () => {
                 <Accordion type="single" collapsible>
                   <AccordionItem value="item-1">
                     <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
-                    The web app isn&apos;t working properly. What should I do?
+                      The web app isn&apos;t working properly. What should I do?
                     </AccordionTrigger>
                     <AccordionContent>
                       <p className="indent-5 text-justify">
                         Try the following:
                         <ol className="list-decimal list-inside">
                           <li>Try to refresh the webpage.</li>
-                          <li>Make sure you are connected to a stable internet.</li>
-                          <li>Contact support at with the contact information provided in the contact section.</li>
+                          <li>
+                            Make sure you are connected to a stable internet.
+                          </li>
+                          <li>
+                            Contact support at with the contact information
+                            provided in the contact section.
+                          </li>
                         </ol>
                       </p>
                     </AccordionContent>
@@ -222,11 +229,12 @@ const page = () => {
                 <Accordion type="single" collapsible>
                   <AccordionItem value="item-1">
                     <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
-                    Can I use the app on multiple devices?
+                      Can I use the app on multiple devices?
                     </AccordionTrigger>
                     <AccordionContent>
                       <p className="indent-5 text-justify">
-                      Yes, log in with your account credentials on any supported device.
+                        Yes, log in with your account credentials on any
+                        supported device.
                       </p>
                     </AccordionContent>
                   </AccordionItem>
@@ -234,11 +242,12 @@ const page = () => {
                 <Accordion type="single" collapsible>
                   <AccordionItem value="item-1">
                     <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
-                    Can I remove patient data?
+                      Can I remove patient data?
                     </AccordionTrigger>
                     <AccordionContent>
                       <p className="indent-5 text-justify">
-                      No, patient data cannot be removed from the application since it is sensitive information.
+                        No, patient data cannot be removed from the application
+                        since it is sensitive information.
                       </p>
                     </AccordionContent>
                   </AccordionItem>
@@ -246,33 +255,43 @@ const page = () => {
               </div>
             </div>
           </TabsContent>
-          <TabsContent value="Contact" >
-            <div className = "w-1/2 mx-auto " >
-              <h1 className="px-8 text-5xl font-bold flex justify-center">
-                Contact Information{" "}
-              </h1>
+          <TabsContent value="Contact">
+            <div className="w-1/2 mx-auto ">
+              <h1 className="px-8 text-5xl font-bold flex justify-center"></h1>
             </div>
-            <div className = " grid grid-cols-3 px-8  py-5">
+            <div >
+              <div className="grid grid-cols-4">
+              <div className="grid col-start-2 col-end-4 justify-start border rounded">
+                <h1 className="text-2xl px-5 font-bold pt-5">Contact 1:</h1>
                 <div>
-                  <div className="flex justify-center font-bold text-lg">
-                    <h3>Contact Number</h3>
-                  </div>
-                  <div className="flex items-center pl-20 py-5">
-                    <p> Number no.1: 09995843332
-                      <br></br>
-                      Number no.2: 09995843332
-                      <br></br>
-                      Number no.2: 09995843332   
-                    </p>
-                  </div>
+                  <p className="px-5 pt-2">Email Address: <Link href="mailto:johnbnacaytuna@su.edu.ph" className="text-purple-600  hover:underline">johnbnacaytuna@su.edu.ph</Link></p> 
+                  <p className="px-5 pt-2">Phone Number: <Link href="tel:09461617887" className="text-purple-600  hover:underline">09461617887</Link></p>
+                  <p className="px-5 pt-2 pb-5">Alternative Phone Number: <Link href="tel:09461614557" className="text-purple-600  hover:underline">09461614557</Link> </p>
 
                 </div>
-                <div >
-                  <h3 >Email Address</h3>
+              </div>
+              </div>
+              <div className="pt-8 grid grid-cols-4">
+                <div className="grid col-start-2 col-end-4 justify-start border rounded">
+                <h1 className="text-2xl px-5 font-bold pt-5">Contact 2:</h1>
+                <div>
+                  <p className="px-5 pt-2">Email Address: <Link href="mailto:johnbnacaytuna@su.edu.ph" className="text-purple-600  hover:underline">johnbnacaytuna@su.edu.ph</Link></p> 
+                  <p className="px-5 pt-2">Phone Number: <Link href="tel:09461617887" className="text-purple-600  hover:underline">09461617887</Link></p>
+                  <p className="px-5 pt-2 pb-5">Alternative Phone Number: <Link href="tel:09461614557" className="text-purple-600  hover:underline">09461614557</Link> </p>
                 </div>
-                <div className="flex justify-center font-bold text-lg">
-                  <h3>Facebook</h3>
+              </div>
+            </div>
+
+            <div className="pt-8 grid grid-cols-4">
+                <div className="grid col-start-2 col-end-4 justify-start border rounded">
+                <h1 className="text-2xl px-5 font-bold pt-5">Contact 3:</h1>
+                <div>
+                  <p className="px-5 pt-2">Email Address: <Link href="mailto:johnbnacaytuna@su.edu.ph" className="text-purple-600  hover:underline">johnbnacaytuna@su.edu.ph</Link></p> 
+                  <p className="px-5 pt-2">Phone Number: <Link href="tel:09461617887" className="text-purple-600  hover:underline">09461617887</Link></p>
+                  <p className="px-5 pt-2 pb-5">Alternative Phone Number: <Link href="tel:09461614557" className="text-purple-600  hover:underline">09461614557</Link> </p>
                 </div>
+              </div>
+            </div>
             </div>
           </TabsContent>
         </Tabs>
