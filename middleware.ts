@@ -27,5 +27,6 @@ export const config = {
      */
     "/((?!_next|api|auth).*)",
     "/auth/signup",
+
   ],
 };

@@ -25,8 +25,8 @@ const formSchema = z.object({
   full_name: z.string({
     required_error: "Full name is required",
   }),
-  date_of_birth: z.string({
-    required_error: "Date of birth is required",
+  date_of_birth: z.string().refine((date) => /^\d{4}-\d{2}-\d{2}$/.test(date), {
+    message: "Date of birth must be in the format YYYY-MM-DD",
   }),
   sex: z.enum(["M", "F"], {
     required_error: "Sex is required",

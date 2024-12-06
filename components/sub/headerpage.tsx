@@ -6,6 +6,8 @@ interface HeaderPageProps {
 }
 
 export default function HeaderPage({ title }: HeaderPageProps) {
+  title = title.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+
   return (
     <div>
       <div className="px-8 py-4">

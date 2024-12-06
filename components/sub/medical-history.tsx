@@ -99,7 +99,7 @@ const MedicalHistory = forwardRef((props: MedicalHistoryProps, ref) => {
       <CardHeader>
         <CardTitle>Medical History</CardTitle>
         <CardDescription>
-          Please provide your medical history information:
+          Please provide the patient's medical history information:
         </CardDescription>
         <Separator />
       </CardHeader>
@@ -175,7 +175,7 @@ const MedicalHistory = forwardRef((props: MedicalHistoryProps, ref) => {
                       </FormControl>
                       <div className="space-y-1 leading-none">
                         <FormLabel>
-                          History of brain surgeries or treatments involving
+                          History of brain treatments involving
                           anesthesia
                         </FormLabel>
                       </div>
@@ -542,7 +542,10 @@ const MedicalHistory = forwardRef((props: MedicalHistoryProps, ref) => {
                 control={form.control}
                 name="other"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md col-span-2 mt-4">
+                  <FormItem className="flex flex-col items-start space-y-3 rounded-md col-span-2 mt-4">
+                    <FormLabel htmlFor="mri">
+                      For other relevant conditions, please indicate below:
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Other"

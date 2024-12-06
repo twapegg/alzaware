@@ -25,9 +25,19 @@ export const POST = async (req) => {
         sameSite: "strict",
         secure: true,
       },
+      // set cookie to expire after 2 days
+      expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
     });
 
-    return response;
+    // Upon login, wakeup backend model from inactivity
+    fetch("https://alzaware-api.onrender.com/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return NextResponse.json({ message: "Login successful" }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: error.message }, { status: 500 });

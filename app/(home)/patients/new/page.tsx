@@ -1,16 +1,5 @@
 import React from "react";
 import AddPatient from "@/components/add-patient";
-import { Separator } from "@/components/ui/separator";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-
-import Link from "next/link";
 import HeaderPage from "@/components/sub/headerpage";
 import Breadcrumbs from "@/components/sub/breadcrumbdynamic";
 

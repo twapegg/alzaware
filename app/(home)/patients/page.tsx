@@ -1,11 +1,20 @@
+"use server";
 import HeaderPage from "@/components/sub/headerpage";
 import { Patient, columns } from "./columns";
 import { DataTable } from "./data-table";
-import dummy from "./dummy.js";
 
 async function getData(): Promise<Patient[]> {
-  // Fetch data from your API here.
-  return dummy;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const response = await fetch(`${baseUrl}/api/patients`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json", // Optional here, for outgoing request
+    },
+  });
+
+  const data = await response.json();
+
+  return data.patients;
 }
 
 export default async function Page() {

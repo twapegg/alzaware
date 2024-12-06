@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import Image from "next/image";
 
 import { CldImage } from "next-cloudinary";
 
@@ -44,7 +43,8 @@ interface ResultsProps {
     other?: string;
   };
   mri: {
-    mri: string; // Ensure this is a string to store the URL
+    mri: File; // Ensure this is a string to store the URL
+    mri_url?: string;
     scan_date: string;
     prediction?: {
       predicted_class: string;
@@ -64,6 +64,51 @@ export default function Results({
         <CardTitle className="text-2xl">Results Summary</CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-4">
+        <Card className="col-span-2 ">
+          <CardHeader>
+            <CardContent className="text-lg font-bold text-center">
+              Prediction
+            </CardContent>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2">
+            <div className="space-y-4">
+              <div className="flex flex-col items-center">
+                <CardDescription>Predicted Class</CardDescription>
+                <CardTitle className="ml-4 text-2xl font-bold">
+                  {mri.prediction?.predicted_class || "N/A"}
+                </CardTitle>
+              </div>
+              <div>
+                <CardDescription>Probability</CardDescription>
+                <CardTitle className="ml-4 text-2xl font-bold">
+                  {mri.prediction?.probability !== undefined
+                    ? `${(mri.prediction.probability * 100).toFixed(2)}%`
+                    : "N/A"}
+                </CardTitle>
+              </div>
+            </div>
+            <div className="grid grid-cols-2">
+              <div>
+                <CardDescription>MRI Scan</CardDescription>
+                {mri.mri_url && (
+                  <CldImage
+                    src={mri.mri_url}
+                    alt="MRI Scan"
+                    width={150}
+                    height={150}
+                  />
+                )}
+              </div>
+              <div>
+                <CardDescription>Scan Date</CardDescription>
+                <CardTitle className="text-xl">
+                  {mri.scan_date || "N/A"}
+                </CardTitle>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         <Card className="col-span-2">
           <CardHeader>
             <CardTitle className="text-xl text-center">
@@ -78,18 +123,7 @@ export default function Results({
             <p>Contact Number: {personalInfo.contact_number}</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl text-center">MRI Scan</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>Scan Date: {mri.scan_date}</p>
-            <p>MRI File:</p>
-            {mri.mri && (
-              <CldImage src={mri.mri} alt="MRI Scan" width={200} height={200} />
-            )}
-          </CardContent>
-        </Card>
+
         <Card className="col-span-2">
           <CardHeader>
             <CardTitle className="text-xl text-center">
@@ -183,19 +217,6 @@ export default function Results({
               {medicalHistory.increased_anxiety ? "Yes" : "No"}
             </p>
             <p>Other: {medicalHistory.other || "N/A"}</p>
-          </CardContent>
-        </Card>
-        <Card className="col-span-2">
-          <CardHeader>
-            <CardTitle className="text-xl text-center">Prediction</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center">
-            <p className="text-xl">
-              Predicted Class: {mri.prediction?.predicted_class}
-            </p>
-            <p className="text-xl">
-              Probability: {mri.prediction?.probability}
-            </p>
           </CardContent>
         </Card>
       </CardContent>

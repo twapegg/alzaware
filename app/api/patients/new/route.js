@@ -1,61 +1,114 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/firebaseConfig";
-import cloudinary from "@/lib/cloudinaryConfig";
-import { Readable } from "stream";
-import crypto from "crypto";
+import { z } from "zod";
+import { db, auth } from "@/lib/firebaseAdmin";
 
-export const POST = async (req) => {
-  try {
-    const formData = await req.formData();
-    const file = formData.get("mri");
+import { cookies } from "next/headers";
 
-    if (!file) {
-      return NextResponse.json(
-        { error: "MRI scan is required" },
-        { status: 400 }
-      );
-    }
+const personalInfoSchema = z.object({
+  full_name: z.string(),
+  date_of_birth: z.string(),
+  sex: z.enum(["M", "F"]),
+  email: z.string().email(),
+  contact_number: z.string(),
+});
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const hash = crypto.createHash('md5').update(buffer).digest('hex');
+const medicalHistorySchema = z.object({
+  smoking: z.boolean(),
+  alcohol: z.boolean(),
+  sedentary_lifestyle: z.boolean(),
+  brain_surgeries: z.boolean(),
+  medications_affecting_cognition: z.boolean(),
+  family_alzheimers: z.boolean(),
+  family_dementias: z.boolean(),
+  family_genetic_disorders: z.boolean(),
+  memory_issues: z.boolean(),
+  problem_solving_issues: z.boolean(),
+  language_issues: z.boolean(),
+  confusion: z.boolean(),
+  stroke: z.boolean(),
+  parkinsons: z.boolean(),
+  brain_injuries: z.boolean(),
+  depression_anxiety: z.boolean(),
+  bipolar_schizophrenia: z.boolean(),
+  forgetfulness: z.boolean(),
+  conversation_issues: z.boolean(),
+  losing_track: z.boolean(),
+  mood_changes: z.boolean(),
+  increased_anxiety: z.boolean(),
+  other: z.string().optional(),
+});
 
-    // Check if an image with the same hash already exists
-    const existingImage = await cloudinary.search
-      .expression(`resource_type:image AND tags:${hash}`)
-      .execute();
+const mriSchema = z.object({
+  mri_url: z.string(),
+  scan_date: z.string(),
+  prediction: z
+    .object({
+      predicted_class: z.string(),
+      probability: z.number(),
+    })
+    .optional(),
+});
 
-    if (existingImage.total_count > 0) {
-      return NextResponse.json({ url: existingImage.resources[0].secure_url });
-    }
+const patientSchema = z.object({
+  personalInfo: personalInfoSchema,
+  medicalHistory: medicalHistorySchema,
+});
 
-    const stream = Readable.from(buffer);
+export async function POST(request) {
+  // try {
 
-    const uploadResult = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          folder: "alzaware/mri_scans",
-          public_id: hash,
-          unique_filename: false,
-          tags: [hash],
-        },
-        (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(result);
-          }
-        }
-      );
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
 
-      stream.pipe(uploadStream);
-    });
-
-    return NextResponse.json({ url: uploadResult.secure_url });
-  } catch (error) {
-    console.error("Error uploading to Cloudinary:", error);
-    return NextResponse.json(
-      { error: "Failed to upload MRI scan" },
-      { status: 500 }
-    );
+  if (!token || !token.value) {
+    return NextResponse.json({ message: "No token found" }, { status: 401 });
   }
-};
+
+  // Verify the token using firebase-admin
+  const decodedToken = await auth.verifyIdToken(token.value);
+
+  // If the token is invalid, return an error
+  if (!decodedToken) {
+    return NextResponse.json({ message: "Invalid token" }, { status: 401 });
+  }
+
+  const userId = decodedToken.uid;
+
+  const body = await request.json();
+
+  const mriData = mriSchema.parse(body.mriData);
+
+  // Create mri document
+  const mriDocRef = db.collection("mri").doc();
+
+  await mriDocRef.set({
+    ...mriData,
+    createdAt: new Date().toISOString(),
+  });
+
+  const patientData = patientSchema.parse(body);
+
+  // Create a new patient document in the "patients" collection
+  const patientDocRef = db.collection("patients").doc();
+
+  await patientDocRef.set({
+    ...patientData,
+    mriData: [
+      {
+        mriId: mriDocRef.id,
+        scanDate: mriData.scan_date,
+        prediction: mriData.prediction,
+      },
+    ],
+    createdBy: userId,
+    createdAt: new Date().toISOString(),
+    sharedTo: [],
+  });
+
+  //
+
+  return NextResponse.json({ message: "Patient created successfully" });
+  // } catch (error) {
+  //   return NextResponse.json({ error: error.message }, { status: 400 });
+  // }
+}

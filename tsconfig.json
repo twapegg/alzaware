@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/firebase-admin.js", "app/api/auth/login/route.js", "app/api/auth/signup/route.js", "app/api/patients/new/route.js", "app/api/patients/route.js", "app/api/predict/route.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/firebaseAdmin.ts", "app/api/auth/login/route.js", "app/api/auth/signup/route.js", "app/api/patients/new/route.js", "app/api/patients/route.js", "app/api/predict/route.js", "app/api/mri/upload/route.js"],
   "exclude": ["node_modules"]
 }

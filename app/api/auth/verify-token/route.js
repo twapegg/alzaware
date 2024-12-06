@@ -1,15 +1,14 @@
 import { NextResponse } from "next/server";
-import { adminAuth } from "@/lib/firebase-admin";
 import { cookies } from "next/headers";
-import { getFirestore } from "firebase-admin/firestore";
-
-const db = getFirestore(); // Initialize Firestore
+import { db } from "@/lib/firebaseAdmin";
+import { auth as adminAuth } from "@/lib/firebaseAdmin";
+import { redirect } from "next/navigation";
 
 const removeCookies = async () => {
   (await cookies()).delete("token");
 };
 
-export const POST = async () => {
+export const POST = async (req, res) => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token");
 
@@ -43,9 +42,10 @@ export const POST = async () => {
   } catch (error) {
     console.error("Error verifying token:", error);
 
-    // delete the token cookie if verification fails
-    removeCookies();
-    // redirect to login page
-    return NextResponse.redirect("/login");
+    // If there's an error, remove the token cookie
+    await removeCookies();
+
+    // Refresh the page
+    return res.redirect(302, "/auth/login");
   }
 };

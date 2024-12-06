@@ -14,7 +14,9 @@ import { Button } from "./ui/button";
 
 const personalInfoSchema = z.object({
   full_name: z.string(),
-  date_of_birth: z.string(),
+  date_of_birth: z.string().refine((date) => /^\d{4}-\d{2}-\d{2}$/.test(date), {
+    message: "Date of birth must be in the format YYYY-MM-DD",
+  }),
   sex: z.enum(["M", "F"]),
   email: z.string().email(),
   contact_number: z.string(),
@@ -48,6 +50,7 @@ const medicalHistorySchema = z.object({
 
 const mriSchema = z.object({
   mri: z.instanceof(File),
+  mri_url: z.string().optional(),
   scan_date: z.string(),
   prediction: z
     .object({
@@ -98,11 +101,10 @@ export default function AddPatient() {
   });
   const [mri, setMRI] = useState<MRIType>({
     mri: new File([], ""),
+    mri_url: "",
     scan_date: "",
     prediction: undefined,
   });
-  const [model, setModel] = useState({});
-  const [result, setResult] = useState({});
 
   const personalInfoRef = useRef<{ submitForm: () => void } | null>(null);
   const medicalHistoryRef = useRef<{ submitForm: () => void } | null>(null);
@@ -116,6 +118,8 @@ export default function AddPatient() {
     } else if (phase === 3) {
       setLoading(true); // Set loading to true before submitting
       mriUploadRef.current?.submitForm();
+    } else if (phase === 4) {
+      handleFormSubmit(mri); // Submit the data to the API
     } else {
       setPhase(phase + 1);
     }
@@ -125,26 +129,49 @@ export default function AddPatient() {
     setPhase(phase - 1);
   };
 
-  const handleFormSubmit = (data: any) => {
+  const handleFormSubmit = async (data: any) => {
     if (phase === 1) {
       setPersonalInfo(data);
     } else if (phase === 2) {
       setMedicalHistory(data);
     } else if (phase === 3) {
-      const mriUrl = URL.createObjectURL(data.mri); // Convert File to URL
-      setMRI({ ...data, mri: mriUrl });
-      setLoading(false); // Set loading to false after submission
+      setMRI(data);
+      setLoading(false);
     }
-    setPhase(phase + 1);
+    setPhase((prevPhase) => prevPhase + 1); // Advance to next phase
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Spinner /> {/* Render a loading spinner or component */}
-      </div>
-    );
-  }
+  const handleAddPatient = async () => {
+    try {
+      const patientData = {
+        personalInfo,
+        medicalHistory,
+        mriData: mri,
+      };
+
+      console.log(patientData);
+
+      const response = await fetch("/api/patients/new", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(patientData),
+      });
+
+      if (!response.ok) throw new Error("Failed to create patient");
+
+      const result = await response.json();
+    } catch (error) {
+      console.error("Error during patient creation:", error);
+    }
+  };
+
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <Spinner />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="w-[60%] mt-24">
@@ -174,7 +201,7 @@ export default function AddPatient() {
           <Results
             personalInfo={personalInfo}
             medicalHistory={medicalHistory}
-            mri={mri}
+            mri={mri} // Pass updated MRI state with prediction
           />
         )}
       </Card>
@@ -185,6 +212,9 @@ export default function AddPatient() {
           </Button>
         )}
         {phase < 4 && <Button onClick={handleNext}>Next</Button>}
+        {phase === 4 && (
+          <Button onClick={handleAddPatient}>Confirm and Add Patient</Button>
+        )}
       </div>
     </div>
   );

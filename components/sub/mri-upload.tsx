@@ -35,14 +35,13 @@ const formSchema = z.object({
   scan_date: z.string({
     required_error: "Scan date is required",
   }),
-  notes: z.string().optional(),
 });
 
 interface MRIUploadProps {
   defaultValues: {
     mri?: File;
+    mri_url?: string;
     scan_date?: string;
-    notes?: string;
   };
   onSubmit: (values: any) => void;
 }
@@ -62,33 +61,40 @@ const MRIUpload = forwardRef((props: MRIUploadProps, ref) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
     formData.append("mri", values.mri);
+
+
+    // Format the date to be in the format YYYY-MM-DD
+    values.scan_date = format(new Date(values.scan_date), "yyyy-MM-dd");
+
     formData.append("scan_date", values.scan_date);
-    formData.append("notes", values.notes || "");
 
-    const response = await fetch("/api/patients/new", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      // Upload MRI scan and retrieve the URL
+      const uploadResponse = await fetch("/api/mri/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const uploadResult = await uploadResponse.json();
 
-    const result = await response.json();
-    if (response.ok) {
+      if (!uploadResponse.ok) throw new Error(uploadResult.error);
+
+      // Get prediction for the uploaded scan
       const predictResponse = await fetch("/api/predict", {
         method: "POST",
-        body: JSON.stringify({ imageUrl: result.url }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageUrl: uploadResult.url }),
       });
 
       const predictResult = await predictResponse.json();
-      if (predictResponse.ok) {
-        props.onSubmit({
-          ...values,
-          mri: result.url,
-          prediction: predictResult,
-        });
-      } else {
-        console.error("Failed to get prediction:", predictResult.message);
-      }
-    } else {
-      console.error("Failed to upload MRI scan:", result.error);
+      if (!predictResponse.ok) throw new Error(predictResult.message);
+
+      props.onSubmit({
+        ...values,
+        mri_url: uploadResult.url,
+        prediction: predictResult.message,
+      });
+    } catch (error) {
+      console.error("Error during MRI upload or prediction:", error);
     }
   }
 
