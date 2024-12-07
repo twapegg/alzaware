@@ -11,11 +11,7 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 
-interface PatientPageProps {
-  params: {
-    id: string;
-  };
-}
+type paramsType = Promise<{ id: string }>; // Add Promise to the type
 
 async function getPatient(id: string) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -26,9 +22,9 @@ async function getPatient(id: string) {
   return response.json();
 }
 
-export default async function PatientPage({ params }: PatientPageProps) {
+export default async function PatientPage(props: { params: paramsType }) {
   // Await the params to ensure they are fully resolved
-  const { id } = await params;
+  const { id } = await props.params;
 
   // Fetch patient data
   const patient = await getPatient(id);
