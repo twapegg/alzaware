@@ -17,6 +17,8 @@ export function MRICarousel({ mriData }: { mriData: MRIImage[] }) {
   // Extract MRI URLs from the mriData array
   const mriUrls = mriData.map((mri) => mri.mriUrl);
 
+  console.log(mriUrls);
+
   // Render a loading state if no images are available
   if (mriUrls.length === 0) {
     return <div>Loading...</div>;

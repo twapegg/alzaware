@@ -26,12 +26,12 @@ export default async function PatientPage({
   params: { id: string };
 }) {
   // Await the params to ensure they are fully resolved
-  const { id } = await params;
+  const { id } = params;
 
   // Fetch patient data
   const patient = await getPatient(id);
 
-  console.log(patient);
+  console.log(patient.mriData);
 
   // Categories for medical history
   const categories = {
@@ -155,7 +155,9 @@ export default async function PatientPage({
             <CardContent className="grid grid-cols-2 gap-4 ">
               <div className="flex flex-col gap-4">
                 <CardDescription>MRI Scan</CardDescription>
-                <MRICarousel mriData={patient.mriData} />
+                <div className="flex justify-center w-50">
+                  <MRICarousel mriData={patient.mriData} />
+                </div>
               </div>
               <div className="space-y-4">
                 <CardDescription>Diagnosis</CardDescription>
