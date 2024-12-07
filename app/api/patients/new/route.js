@@ -78,14 +78,6 @@ export async function POST(request) {
 
   const mriData = mriSchema.parse(body.mriData);
 
-  // Create mri document
-  const mriDocRef = db.collection("mri").doc();
-
-  await mriDocRef.set({
-    ...mriData,
-    createdAt: new Date().toISOString(),
-  });
-
   const patientData = patientSchema.parse(body);
 
   // Create a new patient document in the "patients" collection
@@ -95,9 +87,11 @@ export async function POST(request) {
     ...patientData,
     mriData: [
       {
-        mriId: mriDocRef.id,
+        mriID: 0,
+        mriUrl: mriData.mri_url,
         scanDate: mriData.scan_date,
         prediction: mriData.prediction,
+        createdBy: userId,
       },
     ],
     createdBy: userId,
@@ -107,7 +101,10 @@ export async function POST(request) {
 
   //
 
-  return NextResponse.json({ message: "Patient created successfully" });
+  return NextResponse.json({
+    message: "Patient created successfully",
+    patientId: patientDocRef.id,
+  });
   // } catch (error) {
   //   return NextResponse.json({ error: error.message }, { status: 400 });
   // }

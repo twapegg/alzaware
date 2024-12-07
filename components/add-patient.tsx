@@ -9,6 +9,8 @@ import PersonalInfo from "./sub/personal-info";
 import MRIUpload from "./sub/mri-upload";
 import MedicalHistory from "./sub/medical-history";
 import Results from "./sub/results";
+import { useRouter } from "next/navigation"; // Import useRouter
+
 
 import { Button } from "./ui/button";
 
@@ -106,6 +108,8 @@ export default function AddPatient() {
     prediction: undefined,
   });
 
+  const router = useRouter(); // Initialize useRouter
+
   const personalInfoRef = useRef<{ submitForm: () => void } | null>(null);
   const medicalHistoryRef = useRef<{ submitForm: () => void } | null>(null);
   const mriUploadRef = useRef<{ submitForm: () => void } | null>(null);
@@ -160,6 +164,9 @@ export default function AddPatient() {
       if (!response.ok) throw new Error("Failed to create patient");
 
       const result = await response.json();
+
+      // Redirect to patient page
+      router.push(`/patients/${result.patientId}`);
     } catch (error) {
       console.error("Error during patient creation:", error);
     }
@@ -174,7 +181,7 @@ export default function AddPatient() {
   // }
 
   return (
-    <div className="w-[60%] mt-24">
+    <div className="w-[70%] my-12">
       <Card>
         {phase === 1 && (
           <PersonalInfo

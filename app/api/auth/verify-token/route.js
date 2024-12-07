@@ -8,7 +8,7 @@ const removeCookies = async () => {
   (await cookies()).delete("token");
 };
 
-export const POST = async (req, res) => {
+export const POST = async (request) => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token");
 
@@ -45,7 +45,7 @@ export const POST = async (req, res) => {
     // If there's an error, remove the token cookie
     await removeCookies();
 
-    // Refresh the page
-    return res.redirect(302, "/auth/login");
+    // Refresh the page to clear the client-side token
+    return NextResponse.redirect(new URL("/", request.url));
   }
 };

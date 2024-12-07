@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
 
-export const GET = async (request, { params }) => {
+export const GET = async (request, props) => {
+  const params = await props.params;
   const { id } = params;
 
   try {

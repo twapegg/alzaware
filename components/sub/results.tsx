@@ -1,4 +1,8 @@
-import React from "react";
+import { Button } from "@/components/ui/button";
+
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
 import {
   Card,
   CardContent,
@@ -6,8 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-
-import { CldImage } from "next-cloudinary";
+import MRIModal from "./mri-image-modal";
 
 interface ResultsProps {
   personalInfo: {
@@ -52,6 +55,40 @@ interface ResultsProps {
     };
   };
 }
+const categories = {
+  Lifestyle: ["alcohol", "smoking", "sedentary_lifestyle"],
+  "Mental Health": [
+    "bipolar_schizophrenia",
+    "depression_anxiety",
+    "increased_anxiety",
+    "mood_changes",
+  ],
+  Cognition: [
+    "confusion",
+    "conversation_issues",
+    "forgetfulness",
+    "memory_issues",
+    "problem_solving_issues",
+    "language_issues",
+    "losing_track",
+  ],
+  "Medical History": [
+    "brain_injuries",
+    "brain_surgeries",
+    "stroke",
+    "parkinsons",
+  ],
+  "Family History": [
+    "family_alzheimers",
+    "family_dementias",
+    "family_genetic_disorders",
+  ],
+
+  Other: ["other"],
+};
+
+const formatFieldName = (field: string) =>
+  field.replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase());
 
 export default function Results({
   personalInfo,
@@ -65,22 +102,20 @@ export default function Results({
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-4">
         <Card className="col-span-2 ">
-          <CardHeader>
-            <CardContent className="text-lg font-bold text-center">
-              Prediction
-            </CardContent>
+          <CardHeader className="text-lg font-bold text-center">
+            Prediction
           </CardHeader>
           <CardContent className="grid grid-cols-2">
-            <div className="space-y-4">
-              <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center gap-4">
+              <div className="text-center">
                 <CardDescription>Predicted Class</CardDescription>
-                <CardTitle className="ml-4 text-2xl font-bold">
+                <CardTitle className="text-2xl font-bold">
                   {mri.prediction?.predicted_class || "N/A"}
                 </CardTitle>
               </div>
-              <div>
+              <div className="text-center">
                 <CardDescription>Probability</CardDescription>
-                <CardTitle className="ml-4 text-2xl font-bold">
+                <CardTitle className="text-2xl font-bold">
                   {mri.prediction?.probability !== undefined
                     ? `${(mri.prediction.probability * 100).toFixed(2)}%`
                     : "N/A"}
@@ -90,14 +125,7 @@ export default function Results({
             <div className="grid grid-cols-2">
               <div>
                 <CardDescription>MRI Scan</CardDescription>
-                {mri.mri_url && (
-                  <CldImage
-                    src={mri.mri_url}
-                    alt="MRI Scan"
-                    width={150}
-                    height={150}
-                  />
-                )}
+                {mri.mri_url && <MRIModal mri_url={mri.mri_url} />}
               </div>
               <div>
                 <CardDescription>Scan Date</CardDescription>
@@ -115,12 +143,27 @@ export default function Results({
               Personal Information
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p>Full Name: {personalInfo.full_name}</p>
-            <p>Date of Birth: {personalInfo.date_of_birth}</p>
-            <p>Sex: {personalInfo.sex}</p>
-            <p>Email: {personalInfo.email}</p>
-            <p>Contact Number: {personalInfo.contact_number}</p>
+          <CardContent className="grid grid-cols-2 space-y-2">
+            <div>
+              <CardDescription>Full Name</CardDescription>
+              <span> {personalInfo.full_name}</span>
+            </div>
+            <div>
+              <CardDescription>Contact Number</CardDescription>
+              <span> {personalInfo.contact_number}</span>
+            </div>
+            <div>
+              <CardDescription>Email Address</CardDescription>
+              <span> {personalInfo.email}</span>
+            </div>
+            <div>
+              <CardDescription>Sex</CardDescription>
+              <span> {personalInfo.sex}</span>
+            </div>
+            <div>
+              <CardDescription>Date of Birth</CardDescription>
+              <span> {personalInfo.date_of_birth}</span>
+            </div>
           </CardContent>
         </Card>
 
@@ -130,93 +173,39 @@ export default function Results({
               Medical History
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p>History of smoking: {medicalHistory.smoking ? "Yes" : "No"}</p>
-            <p>
-              History of alcohol consumption:{" "}
-              {medicalHistory.alcohol ? "Yes" : "No"}
-            </p>
-            <p>
-              Sedentary lifestyle:{" "}
-              {medicalHistory.sedentary_lifestyle ? "Yes" : "No"}
-            </p>
-            <p>
-              History of brain surgeries or treatments involving anesthesia:{" "}
-              {medicalHistory.brain_surgeries ? "Yes" : "No"}
-            </p>
-            <p>
-              Current or past prescription medications affecting cognition:{" "}
-              {medicalHistory.medications_affecting_cognition ? "Yes" : "No"}
-            </p>
-            <p>
-              Family history of Alzheimer’s disease:{" "}
-              {medicalHistory.family_alzheimers ? "Yes" : "No"}
-            </p>
-            <p>
-              Family history of other dementias:{" "}
-              {medicalHistory.family_dementias ? "Yes" : "No"}
-            </p>
-            <p>
-              Family history of genetic disorders:{" "}
-              {medicalHistory.family_genetic_disorders ? "Yes" : "No"}
-            </p>
-            <p>
-              Difficulty remembering recent events:{" "}
-              {medicalHistory.memory_issues ? "Yes" : "No"}
-            </p>
-            <p>
-              Trouble with problem-solving or completing tasks:{" "}
-              {medicalHistory.problem_solving_issues ? "Yes" : "No"}
-            </p>
-            <p>
-              Difficulty with language or visual-spatial abilities:{" "}
-              {medicalHistory.language_issues ? "Yes" : "No"}
-            </p>
-            <p>
-              Confusion or disorientation:{" "}
-              {medicalHistory.confusion ? "Yes" : "No"}
-            </p>
-            <p>
-              History of stroke or transient ischemic attacks (TIA):{" "}
-              {medicalHistory.stroke ? "Yes" : "No"}
-            </p>
-            <p>
-              History of Parkinson’s disease or other movement disorders:{" "}
-              {medicalHistory.parkinsons ? "Yes" : "No"}
-            </p>
-            <p>
-              History of traumatic brain injuries:{" "}
-              {medicalHistory.brain_injuries ? "Yes" : "No"}
-            </p>
-            <p>
-              Diagnosed with depression or anxiety:{" "}
-              {medicalHistory.depression_anxiety ? "Yes" : "No"}
-            </p>
-            <p>
-              Diagnosed with bipolar disorder or schizophrenia:{" "}
-              {medicalHistory.bipolar_schizophrenia ? "Yes" : "No"}
-            </p>
-            <p>
-              Forgetfulness affecting daily activities:{" "}
-              {medicalHistory.forgetfulness ? "Yes" : "No"}
-            </p>
-            <p>
-              Trouble following conversations or instructions:{" "}
-              {medicalHistory.conversation_issues ? "Yes" : "No"}
-            </p>
-            <p>
-              Losing track of dates, names, or places:{" "}
-              {medicalHistory.losing_track ? "Yes" : "No"}
-            </p>
-            <p>
-              Mood changes (e.g., irritability, apathy, or social withdrawal):{" "}
-              {medicalHistory.mood_changes ? "Yes" : "No"}
-            </p>
-            <p>
-              Increased anxiety or paranoia:{" "}
-              {medicalHistory.increased_anxiety ? "Yes" : "No"}
-            </p>
-            <p>Other: {medicalHistory.other || "N/A"}</p>
+          <CardContent className="grid grid-cols-3 gap-4">
+            {Object.entries(categories).map(([category, fields]) => (
+              <div key={category}>
+                <CardDescription>{category}</CardDescription>
+                <ul>
+                  {fields.map((field) => {
+                    const value =
+                      medicalHistory[field as keyof typeof medicalHistory];
+                    if (typeof value === "boolean") {
+                      return (
+                        <li key={field}>
+                          {value ? "✅" : "❌"} {formatFieldName(field)}
+                        </li>
+                      );
+                    }
+
+                    if (field === "other" && value === "") {
+                      return <li key={field}>N/A</li>;
+                    }
+
+                    // Display non-empty string fields
+                    if (typeof value === "string" && value !== "") {
+                      return (
+                        <li key={field}>
+                          {formatFieldName(field)}: {value}
+                        </li>
+                      );
+                    }
+                    return null; // Hide fields with false/empty values
+                  })}
+                </ul>
+              </div>
+            ))}
           </CardContent>
         </Card>
       </CardContent>
