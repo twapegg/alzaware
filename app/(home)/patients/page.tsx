@@ -2,13 +2,17 @@
 import HeaderPage from "@/components/sub/headerpage";
 import { Patient, columns } from "./columns";
 import { DataTable } from "./data-table";
+import { headers } from "next/headers";
 
 async function getData(): Promise<Patient[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const response = await fetch(`${baseUrl}/api/patients`, {
+  const resolvedHeaders = await headers(); // Await to resolve headers
+  const host = resolvedHeaders.get("host"); // Now you can access 'get'
+  const protocol = host?.startsWith("localhost") ? "http" : "https"; // Infer protocol
+
+  const response = await fetch(`${protocol}://${host}/api/patients`, {
     method: "GET",
     headers: {
-      "Content-Type": "application/json", // Optional here, for outgoing request
+      "Content-Type": "application/json",
     },
   });
 
