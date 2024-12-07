@@ -11,6 +11,12 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 
+interface PatientPageProps {
+  params: {
+    id: string;
+  };
+}
+
 async function getPatient(id: string) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const response = await fetch(`${baseUrl}/api/patients/${id}`);
@@ -20,13 +26,9 @@ async function getPatient(id: string) {
   return response.json();
 }
 
-export default async function PatientPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function PatientPage({ params }: PatientPageProps) {
   // Await the params to ensure they are fully resolved
-  const { id } = params;
+  const { id } = await params;
 
   // Fetch patient data
   const patient = await getPatient(id);
