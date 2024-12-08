@@ -4,7 +4,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation"; // Import useRouter
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 
 import {
   Form,
@@ -18,6 +17,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
+
+import { useToast } from "@/hooks/use-toast";
 
 // Define the form schema
 const formSchema = z.object({
@@ -26,6 +28,7 @@ const formSchema = z.object({
 });
 
 export default function SignInForm() {
+  const { toast } = useToast();
   const router = useRouter(); // Initialize useRouter
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,26 +43,50 @@ export default function SignInForm() {
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(values),
       });
+
+      const data = await response.json(); // Parse the response JSON
+
+      if (!response.ok) {
+        // Display specific error message from the response
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: data.message || "An unknown error occurred.",
+          variant: "destructive",
+        });
+        return; // Exit the function early on error
+      }
+
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully logged in.",
+      });
+
       router.push("/"); // Redirect to home page
     } catch (error) {
+      // Handle network errors or unexpected issues
       console.error(error);
+      toast({
+        title: "Error",
+        description: "Unable to connect to the server. Please try again later.",
+        variant: "destructive",
+      });
     }
   }
 
   return (
-    <Card className="p-6 border-black w-auto">
-      <div className="flex flex-col gap-2 pb-6">
-        <CardTitle>Log in</CardTitle>
-        <CardDescription>Log in to your account.</CardDescription>
-        <Separator className="bg-black" />
+    <div className="w-full flex flex-col items-center justify-center">
+      <div>
+        <h1 className="text-3xl font-bold">Welcome back</h1>
       </div>
-
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
+          className="min-w-80 flex flex-col rounded-3xl py-8 gap-4"
         >
           <FormField
             control={form.control}
@@ -68,7 +95,7 @@ export default function SignInForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input placeholder="Enter email" {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -83,7 +110,11 @@ export default function SignInForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <Input
+                    placeholder="Enter password"
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -91,11 +122,23 @@ export default function SignInForm() {
             )}
           />
 
-          <Separator className="bg-black" />
+          <Button type="submit" className="font-bold bg-brand">
+            Login
+          </Button>
 
-          <Button type="submit">Submit</Button>
+          <Separator className="mt-4" />
+
+          <span className="text-sm">
+            Don't have an account?{" "}
+            <Link
+              href="/auth/sign-up"
+              className="text-brand font-bold underline"
+            >
+              Sign up
+            </Link>
+          </span>
         </form>
       </Form>
-    </Card>
+    </div>
   );
 }

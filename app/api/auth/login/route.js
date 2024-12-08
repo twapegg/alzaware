@@ -39,7 +39,29 @@ export const POST = async (req) => {
 
     return NextResponse.json({ message: "Login successful" }, { status: 200 });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    let errorMessage = "An error occurred during login";
+    switch (error.code) {
+      case "auth/user-not-found":
+        errorMessage = "No account found with this email.";
+        break;
+      case "auth/invalid-credential":
+        errorMessage = "Invalid credentials. Please try again.";
+        break;
+      case "auth/wrong-password":
+        errorMessage = "Incorrect password. Please try again.";
+        break;
+      case "auth/invalid-email":
+        errorMessage = "The email address is invalid.";
+        break;
+      case "auth/user-disabled":
+        errorMessage = "This account has been disabled. Contact support.";
+        break;
+      case "auth/missing-password":
+        errorMessage = "Password is required.";
+        break;
+      default:
+        errorMessage = error.message;
+    }
+    return NextResponse.json({ message: errorMessage }, { status: 400 });
   }
 };
