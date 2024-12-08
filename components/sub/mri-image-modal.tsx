@@ -1,8 +1,8 @@
+"use client";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogFooter,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -22,8 +22,10 @@ export default function MRIModal({ mri_url }: MRIModalProps) {
       <DialogContent className="max-w-xl">
         <DialogHeader>
           <DialogTitle>MRI Scan</DialogTitle>
-          <CldImage src={mri_url} alt="MRI Scan" width={1000} height={1000} />
+          <DialogDescription> MRI Scan of the patient. </DialogDescription>
         </DialogHeader>
+
+        <CldImage src={mri_url} alt="MRI Scan" width={1000} height={1000} />
       </DialogContent>
     </Dialog>
   );

@@ -32,7 +32,7 @@ const items = [
     icon: UserRoundPlusIcon,
   },
   {
-    title: "Patients",
+    title: "Patient Records",
     url: "/patients",
     icon: Users,
   },

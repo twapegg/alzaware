@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 
+
+
 interface MRIImage {
   mriUrl: string; // Match your actual data structure (camelCase)
 }
@@ -26,26 +28,22 @@ export function MRICarousel({ mriData }: { mriData: MRIImage[] }) {
 
   return (
     <Carousel className="w-full">
-      <CarouselContent className="-ml-1">
+      <CarouselContent className="">
         {mriUrls.map((url, index) => (
-          <CarouselItem key={index} className="pl-1 md:basis-1/2 lg:basis-1/3">
-            <div className="p-1">
-              <Card>
-                <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <Image
-                    src={url}
-                    alt={`MRI Image ${index + 1}`}
-                    width={300}
-                    height={300}
-                  />
-                </CardContent>
-              </Card>
+          <CarouselItem key={index} className="">
+            <div className="flex items-center justify-center">
+              <Image
+                src={url}
+                alt={`MRI Image ${index + 1}`}
+                width={300}
+                height={300}
+              />
             </div>
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious variant="default" />
+      <CarouselNext variant="default" />
     </Carousel>
   );
 }

@@ -1,6 +1,7 @@
 import Breadcrumbs from "@/components/sub/breadcrumbdynamic";
 import HeaderPage from "@/components/sub/headerpage";
 import { MRICarousel } from "@/components/sub/mri-image-carousel";
+import MRIModal from "@/components/sub/mri-image-modal";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,7 +22,11 @@ async function getPatient(id: string) {
   if (!response.ok) {
     throw new Error("Failed to fetch patient data");
   }
-  return response.json();
+
+  const patient = await response.json();
+  console.log(patient);
+
+  return patient;
 }
 
 export default async function PatientPage(props: { params: paramsType }) {
@@ -30,6 +35,8 @@ export default async function PatientPage(props: { params: paramsType }) {
 
   // Fetch patient data
   const patient = await getPatient(id);
+
+  const mriData = patient.mriData[0];
 
   // Categories for medical history
   const categories = {
@@ -76,7 +83,6 @@ export default async function PatientPage(props: { params: paramsType }) {
           <Card>
             <CardHeader className="flex flex-row justify-between items-center">
               <CardTitle>Personal Information</CardTitle>
-              <Button className="flex flex-row gap-2">Edit</Button>
             </CardHeader>
             <CardContent className="grid grid-cols-3">
               <div className="flex flex-col gap-4">
@@ -110,9 +116,8 @@ export default async function PatientPage(props: { params: paramsType }) {
           <Card>
             <CardHeader className="flex flex-row justify-between items-center">
               <CardTitle>Medical History</CardTitle>
-              <Button className="flex flex-row gap-2">Edit</Button>
             </CardHeader>
-            <CardContent className="grid grid-cols-3  gap-4">
+            <CardContent className="grid grid-cols-3 gap-4">
               {Object.entries(categories).map(([category, fields]) => (
                 <div key={category}>
                   <CardDescription>{category}</CardDescription>
@@ -132,11 +137,7 @@ export default async function PatientPage(props: { params: paramsType }) {
 
                       // Display non-empty string fields
                       if (typeof value === "string" && value !== "") {
-                        return (
-                          <li key={field}>
-                            {formatFieldName(field)}: {value}
-                          </li>
-                        );
+                        return <li key={field}>{value}</li>;
                       }
                       return null; // Hide fields with false/empty values
                     })}
@@ -148,26 +149,21 @@ export default async function PatientPage(props: { params: paramsType }) {
           <Card>
             <CardHeader className="flex flex-row justify-between items-center">
               <CardTitle>MRI & Diagnosis Prediction</CardTitle>
-              <Button className="flex flex-row gap-2">Edit</Button>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-4 ">
               <div className="flex flex-col gap-4">
                 <CardDescription>MRI Scan</CardDescription>
-                <div className="flex justify-center w-50">
-                  <MRICarousel mriData={patient.mriData} />
+                <div className="flex ">
+                  <MRIModal mri_url={mriData.mriUrl} />
                 </div>
               </div>
               <div className="space-y-4">
                 <CardDescription>Diagnosis</CardDescription>
-                <span>
-                  {patient.mriData.prediction?.predicted_class || "N/A"}
-                </span>
+                <span>{mriData.prediction?.predicted_class || "N/A"}</span>
                 <CardDescription>Confidence Level</CardDescription>
                 <span>
-                  {patient.mriData.prediction?.probability !== undefined
-                    ? `${(patient.mriData.prediction.probability * 100).toFixed(
-                        2
-                      )}%`
+                  {mriData.prediction?.probability !== undefined
+                    ? `${(mriData.prediction.probability * 100).toFixed(2)}%`
                     : "N/A"}
                 </span>
               </div>
