@@ -47,9 +47,6 @@ export const POST = async (req) => {
       case "auth/invalid-credential":
         errorMessage = "Invalid credentials. Please try again.";
         break;
-      case "auth/wrong-password":
-        errorMessage = "Incorrect password. Please try again.";
-        break;
       case "auth/invalid-email":
         errorMessage = "The email address is invalid.";
         break;

@@ -9,13 +9,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Image from "next/image";
+import { headers } from "next/headers";
 
 type paramsType = Promise<{ id: string }>; // Add Promise to the type
 
 async function getPatient(id: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const response = await fetch(`${baseUrl}/api/patients/${id}`);
+  const resolvedHeaders = await headers(); // Await to resolve headers
+  const host = resolvedHeaders.get("host"); // Now you can access 'get'
+  const protocol = host?.startsWith("localhost") ? "http" : "https"; // Infer protocol
+  const response = await fetch(`${protocol}://${host}/api/patients/${id}`);
   if (!response.ok) {
     throw new Error("Failed to fetch patient data");
   }
@@ -28,8 +30,6 @@ export default async function PatientPage(props: { params: paramsType }) {
 
   // Fetch patient data
   const patient = await getPatient(id);
-
-  console.log(patient.mriData);
 
   // Categories for medical history
   const categories = {

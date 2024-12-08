@@ -10,8 +10,18 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/auth/sign-up", req.url));
   }
 
-  if (!token && !pathname.startsWith("/auth")) {
+  if (!token && pathname !== "/auth/login") {
     return NextResponse.redirect(new URL("/auth/login", req.url));
+  }
+
+  // If user visits site, wake up server model
+  if (pathname === "/") {
+    fetch("https://alzaware-api.onrender.com/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   return NextResponse.next();
@@ -27,6 +37,5 @@ export const config = {
      */
     "/((?!_next|api|auth).*)",
     "/auth/signup",
-
   ],
 };

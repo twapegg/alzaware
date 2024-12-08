@@ -24,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -70,7 +71,7 @@ export function DataTable<TData, TValue>({
                 .getColumn("personalInfo_full_name")
                 ?.setFilterValue(event.target.value)
             }
-            className="max-w-m"
+            className="min-w-80"
           />
           <Button
             variant="outline"
@@ -82,14 +83,13 @@ export function DataTable<TData, TValue>({
           </Button>
         </div>
         <div>
-          {/* add patient */}
           <Button
-            variant="outline"
             size="sm"
             onClick={() => {}}
-            className="ml-2"
+            className="bg-brand font-bold"
+            asChild
           >
-            Add Patient
+            <Link href="/patients/new">Add New Patient</Link>
           </Button>
         </div>
       </div>
