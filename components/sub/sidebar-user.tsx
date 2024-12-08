@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronsUpDown, HelpCircle, LogOut, Settings } from "lucide-react";
+import { ChevronsUpDown, HelpCircle, LogOut} from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -41,7 +41,7 @@ export default function SideBarUser() {
     const fetchUserName = async () => {
       try {
         const response = await fetch("/api/auth/verify-token", {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
@@ -117,10 +117,6 @@ export default function SideBarUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Settings />
-                Account Settings
-              </DropdownMenuItem>
               <DropdownMenuItem>
                 <HelpCircle />
                 Help

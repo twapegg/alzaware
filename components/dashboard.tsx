@@ -16,7 +16,7 @@ export default function Dashboard() {
     const fetchUserName = async () => {
       try {
         const response = await fetch("/api/auth/verify-token", {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },

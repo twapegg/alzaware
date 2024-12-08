@@ -8,7 +8,7 @@ const removeCookies = async () => {
   (await cookies()).delete("token");
 };
 
-export const POST = async (request) => {
+export const GET = async (request) => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token");
 
@@ -35,10 +35,7 @@ export const POST = async (request) => {
     }
 
     const userProfile = userDoc.data();
-    return NextResponse.json(
-      { ...decodedToken, ...userProfile },
-      { status: 200 }
-    );
+    return NextResponse.json({ ...decodedToken, ...userProfile }, { status: 200 });
   } catch (error) {
     console.error("Error verifying token:", error);
 

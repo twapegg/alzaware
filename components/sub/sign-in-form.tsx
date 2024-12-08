@@ -62,7 +62,7 @@ export default function SignInForm() {
       }
 
       toast({
-        title: "Welcome back!",
+        title: "Success!",
         description: "You have successfully logged in.",
       });
 

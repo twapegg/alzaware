@@ -19,12 +19,12 @@ export const POST = async () => {
   }
 
   try {
-    removeCookies();
+    await removeCookies();
 
-    signOut(auth)
-      .then(() => {
+    return signOut(auth)
+      .then(async () => {
         // remove cookies
-        removeCookies();
+        await removeCookies();
         return NextResponse.json(
           { message: "Successfully logged out" },
           { status: 200 }
@@ -34,11 +34,6 @@ export const POST = async () => {
         console.error(error);
         return NextResponse.json({ message: error.message }, { status: 500 });
       });
-
-    return NextResponse.json(
-      { message: "Successfully logged out" },
-      { status: 200 }
-    );
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: error.message }, { status: 500 });

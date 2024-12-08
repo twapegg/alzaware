@@ -14,13 +14,13 @@ export const POST = async (req) => {
     );
     const user = userCredential.user;
 
-    const userDocRef = db.collection("users").doc();
+    const userDocRef = db.collection("users").doc(user.uid);
 
     await userDocRef.set({
-      uid: user.uid,
       email,
       first_name,
       last_name,
+      createdAt: new Date().toISOString(),
     });
 
     return NextResponse.json(

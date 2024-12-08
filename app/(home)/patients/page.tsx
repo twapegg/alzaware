@@ -9,10 +9,13 @@ async function getData(): Promise<Patient[]> {
   const host = resolvedHeaders.get("host"); // Now you can access 'get'
   const protocol = host?.startsWith("localhost") ? "http" : "https"; // Infer protocol
 
+  const cookieHeader = resolvedHeaders.get("cookie"); // Pass cookies explicitly
+
   const response = await fetch(`${protocol}://${host}/api/patients`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Cookie: cookieHeader || "", // Include cookies from headers
     },
   });
 
@@ -22,6 +25,7 @@ async function getData(): Promise<Patient[]> {
 }
 
 export default async function Page() {
+
   const data = await getData();
 
   return (

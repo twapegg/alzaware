@@ -220,7 +220,7 @@ export default function AddPatient() {
         )}
         {phase < 4 && <Button onClick={handleNext}>Next</Button>}
         {phase === 4 && (
-          <Button onClick={handleAddPatient}>Confirm and Add Patient</Button>
+          <Button className="bg-brand" onClick={handleAddPatient}>Confirm and Add Patient</Button>
         )}
       </div>
     </div>
