@@ -1,8 +1,6 @@
 import Breadcrumbs from "@/components/sub/breadcrumbdynamic";
 import HeaderPage from "@/components/sub/headerpage";
-import { MRICarousel } from "@/components/sub/mri-image-carousel";
 import MRIModal from "@/components/sub/mri-image-modal";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
