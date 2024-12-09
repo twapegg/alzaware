@@ -6,7 +6,7 @@ const page = () => {
   return (
     <div>
       <HeaderPage title="Dashboard" />
-      <div className="container p-8">
+      <div className="py-8 px-10">
         <Dashboard />
       </div>
     </div>

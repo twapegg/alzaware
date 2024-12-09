@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown, Share } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import SharePatient from "@/components/sub/share-patient";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -191,7 +192,9 @@ export const columns: ColumnDef<Patient>[] = [
             <DropdownMenuItem>
               <Link href={`/patients/${id}`}>View patient details</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem></DropdownMenuItem>
+            <DropdownMenuItem>
+              <SharePatient patientID={id} />
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { db } from "@/lib/firebaseAdmin";
 import { auth as adminAuth } from "@/lib/firebaseAdmin";
-import { redirect } from "next/navigation";
+
 
 const removeCookies = async () => {
   (await cookies()).delete("token");

@@ -1,14 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { TrendingUp } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -18,52 +16,54 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-];
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  patients: {
+    label: "Patients",
   },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
+  nonDemented: {
+    label: "Non-Demented",
+    color: "chart-1",
   },
-  safari: {
-    label: "Safari",
+  moderateDemented: {
+    label: "Moderately Demented",
     color: "hsl(var(--chart-2))",
   },
-  firefox: {
-    label: "Firefox",
+  veryMildDemented: {
+    label: "Very Mildly Demented",
     color: "hsl(var(--chart-3))",
   },
-  edge: {
-    label: "Edge",
+  mildDemented: {
+    label: "Mildly Demented",
     color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
   },
 } satisfies ChartConfig;
 
 export function ClassBreakdownChart() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
+  const [totalPatients, setTotalPatients] = React.useState(0);
+  const [classBreakdown, setClassBreakdown] = React.useState();
+
+  React.useEffect(() => {
+    fetch("/api/stats/patientCount")
+      .then((res) => res.json())
+      .then((data) => {
+        setTotalPatients(data.patientCount);
+      });
+
+    fetch("/api/stats/classbreakdown")
+      .then((res) => res.json())
+      .then((data) => {
+        setClassBreakdown(data.classBreakdown);
+      });
   }, []);
 
   return (
-    <Card className="h-full">
+    <Card className="">
       <CardHeader className="items-center pb-0">
         <CardTitle>Classification Breakdown</CardTitle>
-        <CardDescription>January - November 2024</CardDescription>
+        <CardDescription>January - December 2024</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0 mt-4">
+      <CardContent className="flex-1 pb-0 mt-2">
         <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
@@ -74,9 +74,9 @@ export function ClassBreakdownChart() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
-              data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              data={classBreakdown}
+              dataKey="count"
+              nameKey="class"
               innerRadius={60}
               strokeWidth={5}
             >
@@ -95,14 +95,14 @@ export function ClassBreakdownChart() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {totalPatients.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Patients
                         </tspan>
                       </text>
                     );

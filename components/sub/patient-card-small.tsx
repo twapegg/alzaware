@@ -4,40 +4,65 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 
 interface PatientCardSmallProps {
-  patientID: string;
-  patientName: string;
-  diagnosis: string;
-  last_scan_date: string;
+  id: string;
+  mriData: any;
+  personalInfo: {
+    full_name: string;
+  };
 }
 
 export default function PatientCardSmall({
-  patientID,
-  patientName,
-  diagnosis,
-  last_scan_date,
+  id,
+  mriData,
+  personalInfo,
 }: PatientCardSmallProps) {
   return (
-    <Link href={`patients/${patientID}`}>
+    <Link href={`patients/${id}`}>
       <Card>
         <CardContent className="py-4">
-          <div className="grid grid-cols-2 ">
-            <div>
-              <CardDescription>Patient ID #{patientID}</CardDescription>
-              <h2 className="text-lg font-semibold">{patientName}</h2>
-              <p className="text-gray-500">{diagnosis}</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col space-y-2">
+              <div>
+                <CardDescription>Patient Name</CardDescription>
+                <h2 className="text-md font-semibold">
+                  {personalInfo.full_name}
+                </h2>
+              </div>
+              <div>
+                <CardDescription>Classification</CardDescription>
+                <h2 className="text-md">
+                  {mriData[0].prediction?.predicted_class}
+                </h2>
+              </div>
             </div>
-            <div>
-              <CardDescription>Last Scan:</CardDescription>
-              <CardDescription className="text-black">
-                {last_scan_date}
-              </CardDescription>
-              <Button
+            <div className="flex flex-col space-y-2">
+              <div>
+                <CardDescription>Last Scan</CardDescription>
+                <h2 className="text-md">
+                  {new Date(mriData[0].scanDate).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </h2>
+              </div>
+              <div>
+                <CardDescription>Probability</CardDescription>
+                <h2 className="text-md">
+                  {" "}
+                  {mriData[0].prediction?.probability !== undefined
+                    ? `${(mriData[0].prediction.probability * 100).toFixed(2)}%`
+                    : "N/A"}
+                </h2>
+              </div>
+
+              {/* <Button
                 variant="outline"
                 onClick={() => {}}
                 className="mt-2 bg-brand"
               >
                 View Details
-              </Button>
+              </Button> */}
             </div>
           </div>
         </CardContent>

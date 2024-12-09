@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { db, auth as adminAuth } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
 
+const removeCookies = async () => {
+  (await cookies()).delete("token");
+};
+
 export const GET = async (req) => {
   try {
     const cookieStore = await cookies();
@@ -46,6 +50,7 @@ export const GET = async (req) => {
     );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    await removeCookies();
+    return NextResponse.redirect(new URL("/", req.url));
   }
 };

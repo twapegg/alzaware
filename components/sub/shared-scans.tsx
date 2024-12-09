@@ -1,39 +1,29 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import SharedCard from "./shared-card";
 
-const dummy = [
-  {
-    patientID: "1234",
-    patientName: "John Doe",
-    sender: "Dr. Jane Doe",
-    scan: "2021-07-01",
-  },
-  {
-    patientID: "5678",
-    patientName: "Jane Doe",
-    sender: "Dr. John Doe",
-    scan: "2021-07-01",
-  },
-  {
-    patientID: "1235",
-    patientName: "John Doe",
-    sender: "Dr. Jane Doe",
-    scan: "2021-07-01",
-  },
-];
-
 export default function SharedScans() {
+  const [patients, setPatients] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/patients/shared")
+      .then((res) => res.json())
+      .then((data) => setPatients(data))
+      .catch((error) =>
+        console.error("Error fetching shared patients:", error)
+      );
+  }, []);
+
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>Shared Scans</CardTitle>
       </CardHeader>
-      <CardContent className="grid grid-cols-1 gap-4">
-        {dummy.map((scan) => (
-          <div key={scan.patientID} className="col-span-1 ">
-            <SharedCard {...scan} />
-          </div>
+      <CardContent className="flex flex-col gap-4">
+        {patients.map((patient: any) => (
+          <SharedCard key={patient.id} patient={patient} />
         ))}
       </CardContent>
     </Card>
