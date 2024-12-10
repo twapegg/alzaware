@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronsUpDown, HelpCircle, LogOut} from "lucide-react";
+import { ChevronsUpDown, HelpCircle, LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -117,10 +117,12 @@ export default function SideBarUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <HelpCircle />
-                Help
-              </DropdownMenuItem>
+              <Link href="/help">
+                <DropdownMenuItem>
+                  <HelpCircle />
+                  Help
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <Link href="/auth/logout">

@@ -45,7 +45,7 @@ export default function Dashboard() {
             Let's make today efficient and patient-friendly.
           </p>
         </div>
-        <Button asChild className="bg-brand text-white">
+        <Button asChild className="bg-brand text-white font-bold">
           <Link href="/patients/new">Upload New Scan</Link>
         </Button>
       </div>

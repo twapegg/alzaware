@@ -22,7 +22,6 @@ async function getPatient(id: string) {
   }
 
   const patient = await response.json();
-  console.log(patient);
 
   return patient;
 }
@@ -113,9 +112,34 @@ export default async function PatientPage(props: { params: paramsType }) {
           </Card>
           <Card>
             <CardHeader className="flex flex-row justify-between items-center">
+              <CardTitle>MRI & Diagnosis Prediction</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-3 gap-4 ">
+              <div className="flex flex-col gap-4 ">
+                <CardDescription>MRI Scan</CardDescription>
+                <div className="">
+                  <MRIModal mri_url={mriData.mriUrl} />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <CardDescription>Diagnosis</CardDescription>
+                <span className="font-bold">
+                  {mriData.prediction?.predicted_class || "N/A"}
+                </span>
+                <CardDescription>Confidence Level</CardDescription>
+                <span className="font-bold">
+                  {mriData.prediction?.probability !== undefined
+                    ? `${(mriData.prediction.probability * 100).toFixed(2)}%`
+                    : "N/A"}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row justify-between items-center">
               <CardTitle>Medical History</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-3 gap-4">
+            <CardContent className="grid grid-cols-6 gap-4">
               {Object.entries(categories).map(([category, fields]) => (
                 <div key={category}>
                   <CardDescription>{category}</CardDescription>
@@ -142,29 +166,6 @@ export default async function PatientPage(props: { params: paramsType }) {
                   </ul>
                 </div>
               ))}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row justify-between items-center">
-              <CardTitle>MRI & Diagnosis Prediction</CardTitle>
-            </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-4 ">
-              <div className="flex flex-col gap-4">
-                <CardDescription>MRI Scan</CardDescription>
-                <div className="flex ">
-                  <MRIModal mri_url={mriData.mriUrl} />
-                </div>
-              </div>
-              <div className="space-y-4">
-                <CardDescription>Diagnosis</CardDescription>
-                <span>{mriData.prediction?.predicted_class || "N/A"}</span>
-                <CardDescription>Confidence Level</CardDescription>
-                <span>
-                  {mriData.prediction?.probability !== undefined
-                    ? `${(mriData.prediction.probability * 100).toFixed(2)}%`
-                    : "N/A"}
-                </span>
-              </div>
             </CardContent>
           </Card>
         </div>

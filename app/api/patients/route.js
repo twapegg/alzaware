@@ -34,6 +34,8 @@ export const GET = async (req) => {
     }
 
     const patients = [];
+
+    // Fetch patients created by the user
     const createdBySnapshot = await db
       .collection("patients")
       .where("createdBy", "==", userId)
@@ -42,12 +44,20 @@ export const GET = async (req) => {
       patients.push({ id: doc.id, ...doc.data() });
     });
 
-    return NextResponse.json(
-      {
-        patients,
-      },
-      { status: 200 }
-    );
+    // Fetch patients shared to the user
+    const snapshot = await db.collection("patients").get();
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      const isSharedToDoctor = data.sharedTo?.some(
+        (shared) => shared.to === userId && shared.status === "accepted"
+      );
+
+      if (isSharedToDoctor) {
+        patients.push({ id: doc.id, ...data });
+      }
+    });
+
+    return NextResponse.json({ patients }, { status: 200 });
   } catch (error) {
     console.error(error);
     await removeCookies();

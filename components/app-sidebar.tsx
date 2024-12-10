@@ -39,7 +39,7 @@ const items = [
 
   {
     title: "Help",
-    url: "#",
+    url: "/help",
     icon: HelpCircle,
   },
 ];

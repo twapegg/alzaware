@@ -28,7 +28,7 @@ export const GET = async (request, props) => {
     snapshot.forEach((doc) => {
       const data = doc.data();
       const isSharedToDoctor = data.sharedTo?.some(
-        (shared) => shared.to === userId
+        (shared) => shared.to === userId && shared.status !== "accepted"
       );
 
       if (isSharedToDoctor) {

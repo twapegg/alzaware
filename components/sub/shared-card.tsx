@@ -4,12 +4,13 @@ import React, { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
-  CardTitle,
   CardContent,
   CardDescription,
+  CardFooter,
 } from "../ui/card";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import PatientModal from "./patient-details-modal";
 
 interface SharedCardProps {
   patient: {
@@ -34,13 +35,11 @@ interface SharedCardProps {
       sharedAt: any;
     }>;
   };
+  onRemove: (id: string) => void;
 }
 
-export default function SharedCard({ patient }: SharedCardProps) {
+export default function SharedCard({ patient, onRemove }: SharedCardProps) {
   const [doctorName, setDoctorName] = useState("");
-
-  const latestMRI = patient.mriData?.[0]; // Assuming we display the latest MRI
-  const sharedWith = patient.sharedTo.map((entry) => entry.to).join(", ");
 
   useEffect(() => {
     // fetch the doctor's name from the server
@@ -52,6 +51,24 @@ export default function SharedCard({ patient }: SharedCardProps) {
     // console.log(patient);
   }, []);
 
+  const AcceptShared = () => {
+    fetch(`/api/patients/${patient.id}/share/accept`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        onRemove(patient.id); // Call the callback to remove the patient from the list
+      })
+      .catch((error) =>
+        console.error("Error accepting shared patient:", error)
+      );
+  };
+
+  
   return (
     <Card className="">
       <CardHeader>
@@ -83,36 +100,13 @@ export default function SharedCard({ patient }: SharedCardProps) {
             <span>{patient.personalInfo.full_name}</span>
           </div>
         </div>
-
-        {/* <p>
-          <strong>Date of Birth:</strong> {patient.personalInfo.date_of_birth}
-        </p>
-        <p>
-          <strong>Email:</strong> {patient.personalInfo.email}
-        </p>
-        {latestMRI && (
-          <>
-            <p>
-              <strong>Latest MRI Prediction:</strong>{" "}
-              {latestMRI.prediction.predicted_class}
-            </p>
-            <p>
-              <strong>Probability:</strong>{" "}
-              {latestMRI.prediction.probability.toFixed(2)}
-            </p>
-            <img
-              src={latestMRI.mriUrl}
-              alt="MRI Scan"
-              className="w-full mt-2"
-            />
-          </>
-        )}
-        <p>
-          <strong>Shared With:</strong> {sharedWith || "None"}
-        </p> */}
-
-        <Button className="mt-2">View Details</Button>
       </CardContent>
+      <CardFooter className="flex justify-between">
+        <PatientModal patientID={patient.id} />
+        <Button onClick={AcceptShared} className="bg-brand font-bold">
+          Accept
+        </Button>
+      </CardFooter>
     </Card>
   );
 }

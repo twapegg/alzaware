@@ -4,13 +4,11 @@ import { useState, useRef } from "react";
 import { Card } from "./ui/card";
 import { z } from "zod";
 
-import Spinner from "./ui/spinner";
 import PersonalInfo from "./sub/personal-info";
 import MRIUpload from "./sub/mri-upload";
 import MedicalHistory from "./sub/medical-history";
 import Results from "./sub/results";
 import { useRouter } from "next/navigation"; // Import useRouter
-
 
 import { Button } from "./ui/button";
 
@@ -68,7 +66,6 @@ type MRIType = z.infer<typeof mriSchema>;
 
 export default function AddPatient() {
   const [phase, setPhase] = useState(1);
-  const [loading, setLoading] = useState(false); // Add loading state
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoType>({
     full_name: "",
     date_of_birth: "",
@@ -120,7 +117,6 @@ export default function AddPatient() {
     } else if (phase === 2) {
       medicalHistoryRef.current?.submitForm();
     } else if (phase === 3) {
-      setLoading(true); // Set loading to true before submitting
       mriUploadRef.current?.submitForm();
     } else if (phase === 4) {
       handleFormSubmit(mri); // Submit the data to the API
@@ -140,7 +136,7 @@ export default function AddPatient() {
       setMedicalHistory(data);
     } else if (phase === 3) {
       setMRI(data);
-      setLoading(false);
+      false;
     }
     setPhase((prevPhase) => prevPhase + 1); // Advance to next phase
   };
@@ -171,14 +167,6 @@ export default function AddPatient() {
       console.error("Error during patient creation:", error);
     }
   };
-
-  // if (loading) {
-  //   return (
-  //     <div className="flex items-center justify-center h-screen">
-  //       <Spinner />
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="w-[70%] my-12">
@@ -220,7 +208,9 @@ export default function AddPatient() {
         )}
         {phase < 4 && <Button onClick={handleNext}>Next</Button>}
         {phase === 4 && (
-          <Button className="bg-brand" onClick={handleAddPatient}>Confirm and Add Patient</Button>
+          <Button className="bg-brand" onClick={handleAddPatient}>
+            Confirm and Add Patient
+          </Button>
         )}
       </div>
     </div>

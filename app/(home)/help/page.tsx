@@ -9,13 +9,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 const page = () => {
   return (
     <div className="">
       <HeaderPage title="Help" />
       <div className="">
-        <Tabs defaultValue="account" className="">
+        <Tabs defaultValue="Started" className="">
           <div className="w-50 flex items-center justify-center py-8">
             <TabsList className="flex justify-center">
               <TabsTrigger value="Started" className="px-8">
@@ -32,19 +34,22 @@ const page = () => {
           <TabsContent value="Started">
             <div className="w-1/2 mx-auto ">
               <h1 className="px-8 text-5xl font-bold flex justify-center">
-                Getting Started{" "}
+                Getting Started
               </h1>
               <div className="px-24 py-5">
                 <Accordion type="single" collapsible>
                   <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
-                      Create Your Account
+                    <AccordionTrigger className="text-xl font-bold">
+                      Create an Account
                     </AccordionTrigger>
                     <AccordionContent>
                       <ol className="pl-10 list-disc py-2">
                         <li>
-                          Go to create account page{" "}
-                          <Link href="#" className="text-purple-500 underline">
+                          Go to the sign up page and create an account{" "}
+                          <Link
+                            href="/auth/sign-up"
+                            className="text-purple-500 underline"
+                          >
                             here
                           </Link>
                         </li>
@@ -54,17 +59,19 @@ const page = () => {
                       </ol>
                     </AccordionContent>
                   </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
-                      Login To Your Account
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger className="text-xl font-bold">
+                      Logging in to an account
                     </AccordionTrigger>
                     <AccordionContent>
                       <ol className="pl-10 list-disc py-2">
                         <li>
-                          If account already exist head to log in page{" "}
-                          <Link href="#" className="text-purple-500 underline">
+                          If you already have an existing account, head to the
+                          log in page{" "}
+                          <Link
+                            href="/auth/login"
+                            className="text-purple-500 underline"
+                          >
                             here
                           </Link>
                         </li>
@@ -74,38 +81,41 @@ const page = () => {
                       </ol>
                     </AccordionContent>
                   </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
-                      Customize Your Profile
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger className="text-xl font-bold">
+                      Adding a Patient
                     </AccordionTrigger>
                     <AccordionContent>
-                      <ol className="pl-10 list-disc py-2">
-                        <li>Go your profile settings</li>
+                      <ol className="pl-10 list-decimal py-2">
                         <li>
-                          Customize your preferences such as profile, pronoun,
-                          etc.
+                          <span className="font-bold">
+                            Input Patient's Personal Information:{" "}
+                          </span>
+                          Fill in the required personal details, including name,
+                          age, gender, and contact information in the patient
+                          registration form.
                         </li>
-                        <li>Save your preferences </li>
-                      </ol>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
-                      For Additional Help
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <ol className="pl-10 list-disc py-2">
                         <li>
-                          Head to the FAQ or Contact Section of the Help Page
+                          <span className="font-bold">
+                            Provide Medical History:{" "}
+                          </span>
+                          Enter the patient's medical history, including any
+                          relevant conditions, family medical background, or
+                          previous diagnoses.
                         </li>
-                        <li>Check out the FAQ section for common Questions</li>
                         <li>
-                          Contact our support team with the details provided in
-                          the contact section
+                          <span className="font-bold">Upload MRI Scan: </span>
+                          Upload the patient's MRI scan in the designated
+                          section. Ensure the file is in the required format
+                          (e.g., JPG, PNG, or DICOM).
+                        </li>
+                        <li>
+                          <span className="font-bold">
+                            Get Prediction Results and Confirm:{" "}
+                          </span>
+                          Review the prediction results generated by the AI. If
+                          everything is correct, confirm the addition of the
+                          patient's data to complete the process.
                         </li>
                       </ol>
                     </AccordionContent>
@@ -122,7 +132,7 @@ const page = () => {
               <div className="px-24 py-5">
                 <Accordion type="single" collapsible>
                   <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
+                    <AccordionTrigger className="text-xl font-bold">
                       What is AlzAware?
                     </AccordionTrigger>
                     <AccordionContent>
@@ -138,10 +148,9 @@ const page = () => {
                       </p>
                     </AccordionContent>
                   </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
+
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger className="text-xl font-bold">
                       Is AlzAware free to use?
                     </AccordionTrigger>
                     <AccordionContent>
@@ -151,10 +160,9 @@ const page = () => {
                       </p>
                     </AccordionContent>
                   </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
+
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger className="text-xl font-bold">
                       Who can use AlzAware?
                     </AccordionTrigger>
                     <AccordionContent>
@@ -164,23 +172,9 @@ const page = () => {
                       </p>
                     </AccordionContent>
                   </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
-                      Can I update my profile information?
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <p className="indent-5 text-justify">
-                        Yes, you can update your profile information by going to
-                        your profile settings and updating your preferences.
-                      </p>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
+
+                  <AccordionItem value="item-4">
+                    <AccordionTrigger className="text-xl font-bold">
                       Can I upload medical records to Alzaware?
                     </AccordionTrigger>
                     <AccordionContent>
@@ -190,10 +184,9 @@ const page = () => {
                       </p>
                     </AccordionContent>
                   </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
+
+                  <AccordionItem value="item-5">
+                    <AccordionTrigger className="text-xl font-bold">
                       Is the medical data secure?
                     </AccordionTrigger>
                     <AccordionContent>
@@ -203,16 +196,18 @@ const page = () => {
                       </p>
                     </AccordionContent>
                   </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
+
+                  <AccordionItem value="item-6">
+                    <AccordionTrigger className="text-xl font-bold">
                       The web app isn&apos;t working properly. What should I do?
                     </AccordionTrigger>
                     <AccordionContent>
-                      <p className="indent-5 text-justify">
-                        Try the following:
-                        <ol className="list-decimal list-inside">
+                      <div className="flex flex-col gap-2">
+                        <p className="indent-5 text-justify">
+                          Try the following:
+                        </p>
+
+                        <ol className="list-decimal list-inside indent-10">
                           <li>Try to refresh the webpage.</li>
                           <li>
                             Make sure you are connected to a stable internet.
@@ -222,32 +217,18 @@ const page = () => {
                             provided in the contact section.
                           </li>
                         </ol>
-                      </p>
+                      </div>
                     </AccordionContent>
                   </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
+
+                  <AccordionItem value="item-7">
+                    <AccordionTrigger className="text-xl font-bold">
                       Can I use the app on multiple devices?
                     </AccordionTrigger>
                     <AccordionContent>
                       <p className="indent-5 text-justify">
-                        Yes, log in with your account credentials on any
-                        supported device.
-                      </p>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl flex items-center justify-start font-bold">
-                      Can I remove patient data?
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <p className="indent-5 text-justify">
-                        No, patient data cannot be removed from the application
-                        since it is sensitive information.
+                        Currently, the application is only available for use on
+                        desktop devices.
                       </p>
                     </AccordionContent>
                   </AccordionItem>
@@ -259,39 +240,35 @@ const page = () => {
             <div className="w-1/2 mx-auto ">
               <h1 className="px-8 text-5xl font-bold flex justify-center"></h1>
             </div>
-            <div >
-              <div className="grid grid-cols-4">
-              <div className="grid col-start-2 col-end-4 justify-start border rounded">
-                <h1 className="text-2xl px-5 font-bold pt-5">Contact 1:</h1>
-                <div>
-                  <p className="px-5 pt-2">Email Address: <Link href="mailto:johnbnacaytuna@su.edu.ph" className="text-purple-600  hover:underline">johnbnacaytuna@su.edu.ph</Link></p> 
-                  <p className="px-5 pt-2">Phone Number: <Link href="tel:09461617887" className="text-purple-600  hover:underline">09461617887</Link></p>
-                  <p className="px-5 pt-2 pb-5">Alternative Phone Number: <Link href="tel:09461614557" className="text-purple-600  hover:underline">09461614557</Link> </p>
-
-                </div>
-              </div>
-              </div>
-              <div className="pt-8 grid grid-cols-4">
-                <div className="grid col-start-2 col-end-4 justify-start border rounded">
-                <h1 className="text-2xl px-5 font-bold pt-5">Contact 2:</h1>
-                <div>
-                  <p className="px-5 pt-2">Email Address: <Link href="mailto:johnbnacaytuna@su.edu.ph" className="text-purple-600  hover:underline">johnbnacaytuna@su.edu.ph</Link></p> 
-                  <p className="px-5 pt-2">Phone Number: <Link href="tel:09461617887" className="text-purple-600  hover:underline">09461617887</Link></p>
-                  <p className="px-5 pt-2 pb-5">Alternative Phone Number: <Link href="tel:09461614557" className="text-purple-600  hover:underline">09461614557</Link> </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-8 grid grid-cols-4">
-                <div className="grid col-start-2 col-end-4 justify-start border rounded">
-                <h1 className="text-2xl px-5 font-bold pt-5">Contact 3:</h1>
-                <div>
-                  <p className="px-5 pt-2">Email Address: <Link href="mailto:johnbnacaytuna@su.edu.ph" className="text-purple-600  hover:underline">johnbnacaytuna@su.edu.ph</Link></p> 
-                  <p className="px-5 pt-2">Phone Number: <Link href="tel:09461617887" className="text-purple-600  hover:underline">09461617887</Link></p>
-                  <p className="px-5 pt-2 pb-5">Alternative Phone Number: <Link href="tel:09461614557" className="text-purple-600  hover:underline">09461614557</Link> </p>
-                </div>
-              </div>
-            </div>
+            <div>
+              <Card className="w-1/2 mx-auto">
+                <CardHeader>
+                  <CardTitle className="text-xl">
+                    For any inquiries, feel free to reach out via:
+                  </CardTitle>
+                  <Separator />
+                </CardHeader>
+                <CardContent className="flex flex-col gap-4">
+                  <span>
+                    Email Address:{" "}
+                    <Link
+                      href="mailto:johnbnacaytuna@su.edu.ph"
+                      className="text-brand font-bold underline"
+                    >
+                      johnbnacaytuna@su.edu.ph
+                    </Link>
+                  </span>
+                  <span>
+                    Phone Number:{" "}
+                    <Link
+                      href="tel:09461617887"
+                      className="text-brand font-bold underline"
+                    >
+                      09461617887
+                    </Link>
+                  </span>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
         </Tabs>
