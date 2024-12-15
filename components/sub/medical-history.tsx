@@ -105,8 +105,8 @@ const MedicalHistory = forwardRef((props: MedicalHistoryProps, ref) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="">
             <div className="flex flex-col gap-8">
-              <div className="grid grid-cols-2 gap-4 w-full">
-                <FormDescription className="col-span-2 text-lg font-semibold">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
+                <FormDescription className="col-span-1 lg:col-span-2 text-lg font-semibold">
                   General Health Information
                 </FormDescription>
                 <FormField
@@ -201,8 +201,8 @@ const MedicalHistory = forwardRef((props: MedicalHistoryProps, ref) => {
                   )}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4 w-full">
-                <FormDescription className="col-span-2 text-lg font-semibold">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
+                <FormDescription className="col-span-1 lg:col-span-2 text-lg font-semibold">
                   Family History
                 </FormDescription>
                 <FormField
@@ -261,8 +261,8 @@ const MedicalHistory = forwardRef((props: MedicalHistoryProps, ref) => {
                   )}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4 w-full">
-                <FormDescription className="col-span-2 text-lg font-semibold">
+              <div className="grid grid-cols-1 lg:grid-cols-2  gap-4 w-full">
+                <FormDescription className="col-span-1 lg:col-span-2 text-lg font-semibold">
                   Neurological and Psychiatric History
                 </FormDescription>
                 <FormField
@@ -436,8 +436,8 @@ const MedicalHistory = forwardRef((props: MedicalHistoryProps, ref) => {
                   )}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4 w-full">
-                <FormDescription className="col-span-2 text-lg font-semibold">
+              <div className="grid grid-cols-1 lg:grid-cols-2  gap-4 w-full">
+                <FormDescription className="col-span-1 lg:col-span-2 text-lg font-semibold">
                   Specific Alzheimer’s and Dementia-Related Symptoms
                 </FormDescription>
                 <FormField

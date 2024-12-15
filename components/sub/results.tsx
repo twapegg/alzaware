@@ -121,8 +121,8 @@ export default function Results({
               <div className="mx-auto text-center">
                 <CardDescription>MRI Scan</CardDescription>
                 <div className="pt-2">
-                {mri.mri_url && <MRIModal mri_url={mri.mri_url} />}
-                  </div>
+                  {mri.mri_url && <MRIModal mri_url={mri.mri_url} />}
+                </div>
               </div>
               <div className="mx-auto text-center ">
                 <CardDescription>Scan Date</CardDescription>
@@ -140,26 +140,26 @@ export default function Results({
               Personal Information
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-2 space-y-2">
+          <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-4 text-lg">
             <div>
               <CardDescription>Full Name</CardDescription>
               <span> {personalInfo.full_name}</span>
-            </div>
-            <div>
-              <CardDescription>Contact Number</CardDescription>
-              <span> {personalInfo.contact_number}</span>
             </div>
             <div>
               <CardDescription>Email Address</CardDescription>
               <span> {personalInfo.email}</span>
             </div>
             <div>
-              <CardDescription>Sex</CardDescription>
-              <span> {personalInfo.sex}</span>
-            </div>
-            <div>
               <CardDescription>Date of Birth</CardDescription>
               <span> {personalInfo.date_of_birth}</span>
+            </div>
+            <div>
+              <CardDescription>Contact Number</CardDescription>
+              <span> {personalInfo.contact_number}</span>
+            </div>
+            <div>
+              <CardDescription>Sex</CardDescription>
+              <span> {personalInfo.sex}</span>
             </div>
           </CardContent>
         </Card>

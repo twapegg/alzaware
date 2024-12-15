@@ -111,8 +111,8 @@ const MRIUpload = forwardRef((props: MRIUploadProps, ref) => {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="">
-            <div className="grid grid-cols-7 gap-4 justify-center items-center">
-              <div className="col-span-4">
+            <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 justify-center items-center">
+              <div className="col-span-1 lg:col-span-4">
                 <FormField
                   control={form.control}
                   name="mri"
@@ -137,7 +137,7 @@ const MRIUpload = forwardRef((props: MRIUploadProps, ref) => {
                   )}
                 />
               </div>
-              <div className="col-span-3">
+              <div className="col-span-1 lg:col-span-3">
                 <FormField
                   control={form.control}
                   name="scan_date"

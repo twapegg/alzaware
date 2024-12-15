@@ -72,49 +72,45 @@ export default async function PatientPage(props: { params: paramsType }) {
     field.replace(/_/g, " ").replace(/^\w/, (c: string) => c.toUpperCase());
 
   return (
-    <div>
+    <div className="mb-12 lg:mb-8">
       <HeaderPage title={`Patient Record`} />
       <Breadcrumbs current={patient.personalInfo.full_name} />
-      <div className="p-8 px-32 w-full">
+      <div className="p-8 px-8 lg:px-32 w-full">
         <div className="grid grid-cols-1 gap-4">
-          <Card>
+          <Card className="p-4">
             <CardHeader className="flex flex-row justify-between items-center">
               <CardTitle>Personal Information</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-3">
-              <div className="flex flex-col gap-4">
-                <div>
-                  <CardDescription>Full Name</CardDescription>
-                  <span>{patient.personalInfo.full_name}</span>
-                </div>
-                <div>
-                  <CardDescription>Email Address</CardDescription>
-                  <span>{patient.personalInfo.email}</span>
-                </div>
+            <CardContent className="grid grid-cols-1 lg:grid-cols-3 gap-4 ">
+              <div className="text-lg">
+                <CardDescription>Full Name</CardDescription>
+                <span>{patient.personalInfo.full_name}</span>
               </div>
-              <div className="flex flex-col gap-4">
-                <div>
-                  <CardDescription>Contact Number</CardDescription>
-                  <span>{patient.personalInfo.contact_number}</span>
-                </div>
-                <div>
-                  <CardDescription>Date of Birth</CardDescription>
-                  <span>{patient.personalInfo.date_of_birth}</span>
-                </div>
+              <div className="text-lg">
+                <CardDescription>Email Address</CardDescription>
+                <span>{patient.personalInfo.email}</span>
               </div>
-              <div className="flex flex-col gap-4">
-                <div>
-                  <CardDescription>Sex</CardDescription>
-                  <span>{patient.personalInfo.sex}</span>
-                </div>
+
+              <div className="text-lg">
+                <CardDescription>Contact Number</CardDescription>
+                <span>{patient.personalInfo.contact_number}</span>
+              </div>
+              <div className="text-lg">
+                <CardDescription>Date of Birth</CardDescription>
+                <span>{patient.personalInfo.date_of_birth}</span>
+              </div>
+
+              <div className="text-lg">
+                <CardDescription>Sex</CardDescription>
+                <span>{patient.personalInfo.sex}</span>
               </div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="p-4">
             <CardHeader className="flex flex-row justify-between items-center">
               <CardTitle>MRI & Diagnosis Prediction</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-3 gap-4 ">
+            <CardContent className="grid grid-cols-2 lg:grid-cols-3 justify-center gap-4 ">
               <div className="flex flex-col gap-4 ">
                 <CardDescription>MRI Scan</CardDescription>
                 <div className="">
@@ -123,11 +119,11 @@ export default async function PatientPage(props: { params: paramsType }) {
               </div>
               <div className="space-y-4">
                 <CardDescription>Diagnosis</CardDescription>
-                <span className="font-bold">
+                <span className="text-xl font-bold">
                   {mriData.prediction?.predicted_class || "N/A"}
                 </span>
                 <CardDescription>Confidence Level</CardDescription>
-                <span className="font-bold">
+                <span className="text-xl font-bold">
                   {mriData.prediction?.probability !== undefined
                     ? `${(mriData.prediction.probability * 100).toFixed(2)}%`
                     : "N/A"}
@@ -135,11 +131,11 @@ export default async function PatientPage(props: { params: paramsType }) {
               </div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="p-4">
             <CardHeader className="flex flex-row justify-between items-center">
               <CardTitle>Medical History</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-6 gap-4">
+            <CardContent className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-4">
               {Object.entries(categories).map(([category, fields]) => (
                 <div key={category}>
                   <CardDescription>{category}</CardDescription>
