@@ -23,12 +23,12 @@ export function RecentAnalysis() {
   }, []);
 
   return (
-    <Card className="">
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>View Recent Analyses</CardTitle>
         <Separator />
       </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-4">
+      <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {recentPatients.length !== 0 ? (
           recentPatients.map((patient: any) => (
             <div key={patient.id} className="col-span-1 ">

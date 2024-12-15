@@ -74,8 +74,8 @@ const PersonalInfo = forwardRef((props: PersonalInfoProps, ref) => {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="">
-            <div className="grid grid-cols-6 gap-4 justify-center items-center">
-              <div className="col-span-4">
+            <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 justify-center items-center">
+              <div className="col-span-1 lg:col-span-4">
                 <FormField
                   control={form.control}
                   name="full_name"
@@ -92,7 +92,7 @@ const PersonalInfo = forwardRef((props: PersonalInfoProps, ref) => {
                   )}
                 />
               </div>
-              <div className="col-span-2">
+              <div className="col-span-1 lg:col-span-2">
                 <FormField
                   control={form.control}
                   name="email"
@@ -109,7 +109,7 @@ const PersonalInfo = forwardRef((props: PersonalInfoProps, ref) => {
                   )}
                 />
               </div>
-              <div className="col-span-2">
+              <div className="col-span-1 lg:col-span-2">
                 <FormField
                   control={form.control}
                   name="date_of_birth"
@@ -127,7 +127,7 @@ const PersonalInfo = forwardRef((props: PersonalInfoProps, ref) => {
                 />
               </div>
 
-              <div className="col-span-2">
+              <div className="col-span-1 lg:col-span-2">
                 <FormField
                   control={form.control}
                   name="contact_number"
@@ -144,7 +144,7 @@ const PersonalInfo = forwardRef((props: PersonalInfoProps, ref) => {
                   )}
                 />
               </div>
-              <div className="col-span-2">
+              <div className="col-span-1 lg:col-span-2">
                 <FormField
                   control={form.control}
                   name="sex"

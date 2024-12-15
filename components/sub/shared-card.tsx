@@ -68,9 +68,8 @@ export default function SharedCard({ patient, onRemove }: SharedCardProps) {
       );
   };
 
-  
   return (
-    <Card className="">
+    <Card className=" w-full">
       <CardHeader>
         <div className="flex justify-between">
           <div>

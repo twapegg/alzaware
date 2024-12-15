@@ -71,13 +71,13 @@ export function DataTable<TData, TValue>({
                 .getColumn("personalInfo_full_name")
                 ?.setFilterValue(event.target.value)
             }
-            className="min-w-80"
+            className="min-w-0 md:min-w-80"
           />
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.resetColumnFilters()}
-            className="ml-2"
+            className="ml-2 invisible md:visible"
           >
             Reset
           </Button>

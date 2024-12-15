@@ -30,7 +30,7 @@ export default function SharedScans() {
   };
 
   return (
-    <Card className="h-full">
+    <Card className="h-full min-w-full">
       <CardHeader>
         <CardTitle>Shared Scans</CardTitle>
         <Separator />

@@ -169,7 +169,7 @@ export default function AddPatient() {
   };
 
   return (
-    <div className="w-[70%] my-12">
+    <div className="w-[90%] lg:w-[60%] my-12">
       <Card>
         {phase === 1 && (
           <PersonalInfo

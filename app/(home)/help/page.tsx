@@ -32,7 +32,7 @@ const page = () => {
             </TabsList>
           </div>
           <TabsContent value="Started">
-            <div className="w-1/2 mx-auto ">
+            <div className="lg:w-1/2 mx-auto ">
               <h1 className="px-8 text-5xl font-bold flex justify-center">
                 Getting Started
               </h1>
@@ -125,8 +125,8 @@ const page = () => {
             </div>
           </TabsContent>
           <TabsContent value="FAQ">
-            <div className="w-1/2 mx-auto ">
-              <h1 className="px-8 text-5xl font-bold flex justify-center">
+            <div className="lg:w-1/2 mx-auto ">
+              <h1 className="px-8 text-4xl lg:text-5xl font-bold flex justify-center">
                 Frequently Asked Questions{" "}
               </h1>
               <div className="px-24 py-5">
@@ -237,11 +237,13 @@ const page = () => {
             </div>
           </TabsContent>
           <TabsContent value="Contact">
-            <div className="w-1/2 mx-auto ">
-              <h1 className="px-8 text-5xl font-bold flex justify-center"></h1>
+            <div className="lg:w-1/2 mx-auto ">
+              <h1 className="px-8 text-3xl md:text-4xl lg:text-5xl font-bold flex justify-center">
+                Contact Details{" "}
+              </h1>
             </div>
-            <div>
-              <Card className="w-1/2 mx-auto">
+            <div className="py-12 px-12 md:px-0">
+              <Card className="w-full lg:w-1/2 mx-auto">
                 <CardHeader>
                   <CardTitle className="text-xl">
                     For any inquiries, feel free to reach out via:

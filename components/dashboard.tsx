@@ -38,7 +38,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
         <div>
           <h1 className="text-2xl">Welcome back, {userName || "Guest"}</h1>
           <p className="text-gray-500">
@@ -49,17 +49,15 @@ export default function Dashboard() {
           <Link href="/patients/new">Upload New Scan</Link>
         </Button>
       </div>
-      <div className="grid w-full grid-cols-8 gap-4">
-        <div className="flex flex-col gap-4 col-span-6 bg-white rounded-lg">
-          <div className="col-span-2">
-            <RecentAnalysis />
-          </div>
-          <div className="col-span-4">
-            <ClassBreakdownChart />
-          </div>
+      <div className="grid w-full grid-cols-1 lg:grid-cols-8 grid-rows-1 gap-4 pb-12 lg:pb-4">
+        <div className="col-span-1 lg:col-span-6">
+          <RecentAnalysis />
         </div>
-        <div className="col-span-2 bg-white rounded-lg">
+        <div className="col-span-1 lg:col-span-2 row-span-2 bg-white rounded-lg">
           <SharedScans />
+        </div>
+        <div className="col-span-1 lg:col-span-6">
+          <ClassBreakdownChart />
         </div>
       </div>
     </div>

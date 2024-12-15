@@ -95,16 +95,16 @@ export default function Results({
       <CardHeader>
         <CardTitle className="text-2xl">Results Summary</CardTitle>
       </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-4">
+      <CardContent className="flex flex-col gap-4">
         <Card className="col-span-2 ">
           <CardHeader className="text-lg font-bold text-center">
             Prediction
           </CardHeader>
-          <CardContent className="grid grid-cols-2">
-            <div className="flex flex-col items-center gap-4">
+          <CardContent className="flex flex-col gap-4 px-12 space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="text-center">
                 <CardDescription>Predicted Class</CardDescription>
-                <CardTitle className="text-2xl font-bold">
+                <CardTitle className="text-xl lg:text-2xl font-bold">
                   {mri.prediction?.predicted_class || "N/A"}
                 </CardTitle>
               </div>
@@ -117,14 +117,16 @@ export default function Results({
                 </CardTitle>
               </div>
             </div>
-            <div className="grid grid-cols-2">
-              <div>
+            <div className="grid grid-cols-2 gap-4 justify-center">
+              <div className="mx-auto text-center">
                 <CardDescription>MRI Scan</CardDescription>
+                <div className="pt-2">
                 {mri.mri_url && <MRIModal mri_url={mri.mri_url} />}
+                  </div>
               </div>
-              <div>
+              <div className="mx-auto text-center ">
                 <CardDescription>Scan Date</CardDescription>
-                <CardTitle className="text-xl">
+                <CardTitle className="text-xl lg:text-2xl">
                   {mri.scan_date || "N/A"}
                 </CardTitle>
               </div>
@@ -168,7 +170,7 @@ export default function Results({
               Medical History
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-3 gap-4">
+          <CardContent className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {Object.entries(categories).map(([category, fields]) => (
               <div key={category}>
                 <CardDescription>{category}</CardDescription>
