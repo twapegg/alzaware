@@ -4,7 +4,7 @@ import "@/app/globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: "Log in",
+  title: "Log in | AlzAware",
   description: "Log in to your account.",
 };
 
