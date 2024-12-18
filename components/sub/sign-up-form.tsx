@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 // Define the form schema
 const formSchema = z.object({
@@ -53,6 +54,7 @@ const formSchema = z.object({
 });
 
 export default function SignUpForm() {
+  const { toast } = useToast();
   const router = useRouter(); // Initialize useRouter
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,13 +69,31 @@ export default function SignUpForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await fetch("/api/auth/signup", {
+      const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(values),
       });
+
+      const data = await response.json(); // Parse the response JSON
+
+      if (!response.ok) {
+        // Display specific error message from the response
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: data.message || "An unknown error occurred.",
+          variant: "destructive",
+        });
+        return; // Exit the function early on error
+      }
+
+      toast({
+        title: "Success!",
+        description: "Account created successfully."
+      });
+
       router.push("/auth/login"); // Route to /login
     } catch (error) {
       console.error(error);
