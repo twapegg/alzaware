@@ -1,31 +1,19 @@
-"use server";
+"use client"
+
 import HeaderPage from "@/components/sub/headerpage";
 import { Patient, columns } from "./columns";
 import { DataTable } from "./data-table";
-import { headers } from "next/headers";
+import { useEffect, useState } from "react";
 
-async function getData(): Promise<Patient[]> {
-  const resolvedHeaders = await headers(); // Await to resolve headers
-  const host = resolvedHeaders.get("host"); // Now you can access 'get'
-  const protocol = host?.startsWith("localhost") ? "http" : "https"; // Infer protocol
 
-  const cookieHeader = resolvedHeaders.get("cookie"); // Pass cookies explicitly
+export default  function Page() {
+  const [data, setData] = useState<Patient[]>([]);
 
-  const response = await fetch(`${protocol}://${host}/api/patients`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Cookie: cookieHeader || "", // Include cookies from headers
-    },
-  });
-
-  const data = await response.json();
-
-  return data.patients;
-}
-
-export default async function Page() {
-  const data = await getData();
+  useEffect(() => {
+    fetch("/api/patients")
+      .then((res) => res.json())
+      .then((data) => setData(data.patients));
+  }, []);
 
   return (
     <div>
